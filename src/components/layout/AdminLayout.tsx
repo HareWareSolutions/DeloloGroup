@@ -57,6 +57,14 @@ const AdminLayout: React.FC = () => {
                                 News
                             </Link>
                         </li>
+                        <li>
+                            <Link
+                                to="/admin/candidates"
+                                className={`${styles.sidebarLink} ${location.pathname.includes('candidates') ? styles.sidebarLinkActive : ''}`}
+                            >
+                                Candidates
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
 

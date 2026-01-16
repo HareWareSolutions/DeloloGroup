@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Image as ImageIcon } from 'lucide-react';
+import { Plus, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import styles from './ManageMembers.module.css'; // Reusing styles
 import DataTable from '../../components/admin/DataTable';
 import MediaLibrary from '../../components/admin/MediaLibrary';
@@ -99,9 +99,14 @@ const ManageNews: React.FC = () => {
         <div className={styles.container}>
             <div className={styles.header}>
                 <h2>Manage News</h2>
-                <button className={styles.addBtn} onClick={startNew}>
-                    <Plus size={16} /> Add News
-                </button>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <button className={styles.addBtn} onClick={fetchNews} style={{ backgroundColor: '#6b7280' }}>
+                        <RefreshCw size={16} /> Refresh
+                    </button>
+                    <button className={styles.addBtn} onClick={startNew}>
+                        <Plus size={16} /> Add News
+                    </button>
+                </div>
             </div>
 
             <DataTable

@@ -52,3 +52,13 @@ CREATE TABLE IF NOT EXISTS site_content (
   content_pt TEXT,
   content_en TEXT
 );
+
+CREATE TABLE IF NOT EXISTS candidatos (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT,
+  email TEXT,
+  position TEXT,
+  message TEXT,
+  date TEXT,
+  cv_url TEXT
+);

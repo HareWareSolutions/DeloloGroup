@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { Linkedin, FileText, GraduationCap, User } from 'lucide-react';
 import styles from './Members.module.css';
@@ -24,7 +25,6 @@ const Members: React.FC = () => {
     const { t, language } = useLanguage();
     const [members, setMembers] = useState<Member[]>([]);
     const [loading, setLoading] = useState(true);
-
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -54,15 +54,17 @@ const Members: React.FC = () => {
         <div className={styles.grid}>
             {list.map(member => (
                 <div key={member.id} className={styles.card}>
-                    <div className={styles.imageContainer}>
+                    <Link to={`/members/${member.id}`} className={styles.imageContainer}>
                         <img
                             src={member.image_url ? `http://localhost:3001${member.image_url}` : '/placeholder.png'}
                             alt={member.name}
                             className={styles.image}
                         />
-                    </div>
+                    </Link>
                     <div className={styles.content}>
-                        <h3 className={styles.name}>{member.name}</h3>
+                        <Link to={`/members/${member.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <h3 className={styles.name}>{member.name}</h3>
+                        </Link>
                         <span className={styles.role}>
                             {language === 'pt' ? member.role_pt : member.role_en}
                         </span>
@@ -72,7 +74,20 @@ const Members: React.FC = () => {
                             </p>
                         )}
                         <p className={styles.bio}>
-                            {language === 'pt' ? member.bio_pt : member.bio_en}
+                            {(() => {
+                                const bio = language === 'pt' ? (member.bio_pt || '') : (member.bio_en || '');
+                                if (bio.length > 150) {
+                                    return (
+                                        <>
+                                            {bio.substring(0, 150)}...
+                                            <Link to={`/members/${member.id}`} style={{ color: 'var(--color-primary)', marginLeft: '8px', fontWeight: 500, textDecoration: 'none' }}>
+                                                {language === 'pt' ? 'Ver mais' : 'See more'}
+                                            </Link>
+                                        </>
+                                    );
+                                }
+                                return bio;
+                            })()}
                         </p>
 
                         <div className={styles.socialLinks}>

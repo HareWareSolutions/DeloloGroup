@@ -208,6 +208,15 @@ app.get('/api/news', (req, res) => {
     });
 });
 
+
+app.get('/api/news/:id', (req, res) => {
+    db.get("SELECT * FROM news WHERE id = ?", [req.params.id], (err, row) => {
+        if (err) res.status(500).json({ error: err.message });
+        else if (!row) res.status(404).json({ error: 'News not found' });
+        else res.json(row);
+    });
+});
+
 app.post('/api/news', authenticateToken, (req, res) => {
     const { title_pt, title_en, content_pt, content_en, date, image_url, category, status } = req.body;
     db.run(`INSERT INTO news (title_pt, title_en, content_pt, content_en, date, image_url, category, status) VALUES (?,?,?,?,?,?,?,?)`,
@@ -266,6 +275,15 @@ app.get('/api/members', (req, res) => {
     });
 });
 
+
+app.get('/api/members/:id', (req, res) => {
+    db.get("SELECT * FROM members WHERE id = ?", [req.params.id], (err, row) => {
+        if (err) res.status(500).json({ error: err.message });
+        else if (!row) res.status(404).json({ error: 'Member not found' });
+        else res.json(row);
+    });
+});
+
 app.post('/api/members', authenticateToken, (req, res) => {
     const { name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace } = req.body;
     db.run(`INSERT INTO members (name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
@@ -290,6 +308,33 @@ app.put('/api/members/:id', authenticateToken, (req, res) => {
 
 app.delete('/api/members/:id', authenticateToken, (req, res) => {
     db.run(`DELETE FROM members WHERE id=?`, [req.params.id], function (err) {
+        if (err) res.status(500).json({ error: err.message });
+        else res.json({ changes: this.changes });
+    });
+});
+
+// --- CANDIDATES ROUTES ---
+app.get('/api/candidates', authenticateToken, (req, res) => {
+    db.all("SELECT * FROM candidatos ORDER BY date DESC", [], (err, rows) => {
+        if (err) res.status(500).json({ error: err.message });
+        else res.json(rows);
+    });
+});
+
+app.post('/api/candidates', (req, res) => {
+    const { name, email, position, message } = req.body;
+    const date = new Date().toISOString();
+    db.run(`INSERT INTO candidatos (name, email, position, message, date) VALUES (?, ?, ?, ?, ?)`,
+        [name, email, position, message, date],
+        function (err) {
+            if (err) res.status(500).json({ error: err.message });
+            else res.json({ id: this.lastID });
+        }
+    );
+});
+
+app.delete('/api/candidates/:id', authenticateToken, (req, res) => {
+    db.run(`DELETE FROM candidatos WHERE id=?`, [req.params.id], function (err) {
         if (err) res.status(500).json({ error: err.message });
         else res.json({ changes: this.changes });
     });

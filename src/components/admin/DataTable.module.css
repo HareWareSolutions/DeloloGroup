@@ -96,3 +96,40 @@
     color: #888;
     padding: 2rem;
 }
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.pageControls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.pageBtn {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pageBtn:hover:not(:disabled) {
+    background: #f0f0f0;
+}
+
+.pageBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pageInfo {
+    margin: 0 0.5rem;
+}

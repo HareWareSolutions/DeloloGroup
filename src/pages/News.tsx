@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './News.module.css';
@@ -120,14 +121,14 @@ const News: React.FC = () => {
                 ) : (
                     paginatedItems.map(item => (
                         <article key={item.id} className={styles.card}>
-                            <div className={styles.imageContainer}>
+                            <Link to={`/news/${item.id}`} className={styles.imageContainer}>
                                 <img
                                     src={item.image_url ? `http://localhost:3001${item.image_url}` : '/placeholder.png'}
                                     alt={getTitle(item)}
                                     className={styles.image}
                                     onError={(e) => { e.currentTarget.src = '/placeholder.png'; }}
                                 />
-                            </div>
+                            </Link>
                             <div className={styles.content}>
                                 <div className={styles.date}>
                                     {new Date(item.date).toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US', {
@@ -136,8 +137,13 @@ const News: React.FC = () => {
                                         day: 'numeric'
                                     })}
                                 </div>
-                                <h2 className={styles.title}>{getTitle(item)}</h2>
+                                <Link to={`/news/${item.id}`} style={{ textDecoration: 'none' }}>
+                                    <h2 className={styles.title}>{getTitle(item)}</h2>
+                                </Link>
                                 <p className={styles.excerpt}>{getContent(item)}</p>
+                                <Link to={`/news/${item.id}`} className={styles.readMore}>
+                                    {language === 'pt' ? 'Leia mais' : 'Read more'}
+                                </Link>
                             </div>
                         </article>
                     ))

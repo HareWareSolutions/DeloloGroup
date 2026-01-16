@@ -9,7 +9,12 @@ const Footer: React.FC = () => {
             <div className={styles.container}>
                 <div className={styles.grid}>
                     <div className={styles.brand}>
-                        <img src="/logo.png" alt="Delolo Research Group" className={styles.footerLogo} />
+                        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '1rem' }}>
+                            <img src="/logo.png" alt="Delolo Research Group" className={styles.footerLogo} style={{ marginBottom: 0 }} />
+                            <a href="https://www.ufjf.br/" target="_blank" rel="noopener noreferrer">
+                                <img src="/ufjf-logo.png" alt="Universidade Federal de Juiz de Fora" className={styles.footerLogo} style={{ marginBottom: 0 }} />
+                            </a>
+                        </div>
                         <p className={styles.mission}>
                             Transformando conhecimento científico em inovação sustentável.
                             Foco em catálise e química verde.
@@ -33,7 +38,12 @@ const Footer: React.FC = () => {
                                 <Mail size={16} /> <span>contato@delologroup.com</span>
                             </li>
                             <li>
-                                <MapPin size={16} /> <span>Universidade Federal... </span>
+                                <MapPin size={16} style={{ flexShrink: 0 }} />
+                                <span>
+                                    Dept. de Química, ICE, UFJF<br />
+                                    Campus Universitário<br />
+                                    Juiz de Fora - MG
+                                </span>
                             </li>
                         </ul>
                     </div>

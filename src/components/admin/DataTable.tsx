@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Edit, Trash, Search, Eye } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Edit, Trash, Search, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './DataTable.module.css';
 
 interface Column<T> {
@@ -16,6 +16,10 @@ interface DataTableProps<T> {
     onView?: (item: T) => void;
     filterPlaceholder?: string;
     filterKeys?: (keyof T)[];
+    enableSelection?: boolean;
+    onSelectionChange?: (selectedIds: (string | number)[]) => void;
+    itemsPerPage?: number;
+    rowClassName?: (item: T) => string;
 }
 
 function DataTable<T extends { id?: string | number }>({
@@ -26,9 +30,19 @@ function DataTable<T extends { id?: string | number }>({
     onView,
     filterPlaceholder = "Search...",
     filterKeys,
+    enableSelection = false,
+    onSelectionChange,
+    itemsPerPage = 10,
     rowClassName
-}: DataTableProps<T> & { rowClassName?: (item: T) => string }) {
+}: DataTableProps<T>) {
     const [filter, setFilter] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [selected, setSelected] = useState<Set<string | number>>(new Set());
+
+    // Reset page and selection when filter changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filter]);
 
     const filteredData = data.filter(item => {
         if (!filter) return true;
@@ -40,10 +54,38 @@ function DataTable<T extends { id?: string | number }>({
         });
     });
 
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+    const paginatedData = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.checked) {
+            const allIds = new Set(filteredData.map(item => item.id!));
+            setSelected(allIds);
+            onSelectionChange?.(Array.from(allIds));
+        } else {
+            setSelected(new Set());
+            onSelectionChange?.([]);
+        }
+    };
+
+    const handleSelectRow = (id: string | number) => {
+        const newSelected = new Set(selected);
+        if (newSelected.has(id)) {
+            newSelected.delete(id);
+        } else {
+            newSelected.add(id);
+        }
+        setSelected(newSelected);
+        onSelectionChange?.(Array.from(newSelected));
+    };
+
+    const isAllSelected = filteredData.length > 0 && selected.size === filteredData.length;
+    const isIndeterminate = selected.size > 0 && selected.size < filteredData.length;
+
     return (
         <div className={styles.container}>
-            {filterKeys && (
-                <div className={styles.filterBar}>
+            <div className={styles.filterBar}>
+                {filterKeys && (
                     <div className={styles.searchWrapper}>
                         <Search size={18} className={styles.searchIcon} />
                         <input
@@ -54,13 +96,24 @@ function DataTable<T extends { id?: string | number }>({
                             className={styles.searchInput}
                         />
                     </div>
-                </div>
-            )}
+                )}
+                {/* Could add more filters here later */}
+            </div>
 
             <div className={styles.tableWrapper}>
                 <table className={styles.table}>
                     <thead>
                         <tr>
+                            {enableSelection && (
+                                <th style={{ width: '1%' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={isAllSelected}
+                                        ref={input => { if (input) input.indeterminate = isIndeterminate; }}
+                                        onChange={handleSelectAll}
+                                    />
+                                </th>
+                            )}
                             {columns.map((col, idx) => (
                                 <th key={idx}>{col.label}</th>
                             ))}
@@ -68,9 +121,18 @@ function DataTable<T extends { id?: string | number }>({
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredData.length > 0 ? (
-                            filteredData.map((item, idx) => (
+                        {paginatedData.length > 0 ? (
+                            paginatedData.map((item, idx) => (
                                 <tr key={item.id || idx} className={rowClassName ? rowClassName(item) : ''}>
+                                    {enableSelection && (
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                checked={selected.has(item.id!)}
+                                                onChange={() => handleSelectRow(item.id!)}
+                                            />
+                                        </td>
+                                    )}
                                     {columns.map((col, cIdx) => (
                                         <td key={cIdx}>
                                             {col.render ? col.render(item) : String(item[col.key as keyof T] || '')}
@@ -101,12 +163,38 @@ function DataTable<T extends { id?: string | number }>({
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={columns.length + 1} className={styles.empty}>No records found.</td>
+                                <td colSpan={columns.length + (enableSelection ? 2 : 1)} className={styles.empty}>No records found.</td>
                             </tr>
                         )}
                     </tbody>
                 </table>
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className={styles.pagination}>
+                    <div>
+                        Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredData.length)} of {filteredData.length} entries
+                    </div>
+                    <div className={styles.pageControls}>
+                        <button
+                            className={styles.pageBtn}
+                            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                            disabled={currentPage === 1}
+                        >
+                            <ChevronLeft size={16} />
+                        </button>
+                        <span className={styles.pageInfo}>Page {currentPage} of {totalPages}</span>
+                        <button
+                            className={styles.pageBtn}
+                            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                            disabled={currentPage === totalPages}
+                        >
+                            <ChevronRight size={16} />
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
