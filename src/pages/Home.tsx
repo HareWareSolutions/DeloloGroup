@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import styles from './Home.module.css';
@@ -13,7 +13,8 @@ interface NewsItem {
 
 interface Publication {
     id: number;
-    title: string;
+    title_pt: string;
+    title_en: string;
     journal: string;
     year: number;
     image_url?: string;
@@ -32,7 +33,23 @@ const Home: React.FC = () => {
     const { t, language } = useLanguage();
     const [latestNews, setLatestNews] = useState<NewsItem[]>([]);
     const [publications, setPublications] = useState<Publication[]>([]);
-    const [piMember, setPiMember] = useState<Member | null>(null);
+    const [teamMembers, setTeamMembers] = useState<Member[]>([]);
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const nextMember = () => {
+        setActiveIndex((prev) => (prev + 1) % teamMembers.length);
+    };
+
+    const prevMember = () => {
+        setActiveIndex((prev) => (prev - 1 + teamMembers.length) % teamMembers.length);
+    };
+
+    useEffect(() => {
+        if (teamMembers.length > 1) {
+            const interval = setInterval(nextMember, 5000); // Auto-rotate every 5s
+            return () => clearInterval(interval);
+        }
+    }, [teamMembers.length]);
 
     useEffect(() => {
         // Fetch News
@@ -57,13 +74,16 @@ const Home: React.FC = () => {
             })
             .catch(err => console.error(err));
 
-        // Fetch Members (Find PI)
+        // Fetch Members (PI + Current)
         fetch('http://localhost:3001/api/members')
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
                     const pi = data.find((m: Member) => m.type === 'pi');
-                    if (pi) setPiMember(pi);
+                    const active = data.filter((m: Member) => m.type === 'current');
+                    // Combine PI first, then active members
+                    const team = pi ? [pi, ...active] : active;
+                    setTeamMembers(team);
                 }
             })
             .catch(err => console.error(err));
@@ -137,7 +157,9 @@ const Home: React.FC = () => {
                         {publications.map(pub => (
                             <div key={pub.id} className={styles.pubCard}>
                                 <span className={styles.pubYear}>{pub.year}</span>
-                                <h3 className={styles.pubTitle}>{pub.title}</h3>
+                                <h3 className={styles.pubTitle}>
+                                    {language === 'pt' && pub.title_pt ? pub.title_pt : pub.title_en}
+                                </h3>
                                 <div className={styles.pubJournal}>{pub.journal}</div>
                             </div>
                         ))}
@@ -154,18 +176,67 @@ const Home: React.FC = () => {
                             {language === 'pt' ? 'Conheça o grupo' : 'Meet the group'} <ArrowRight size={16} />
                         </Link>
                     </div>
-                    {piMember && (
-                        <div className={styles.piHighlight}>
-                            <img
-                                src={piMember.image_url ? `http://localhost:3001${piMember.image_url}` : '/placeholder-user.jpg'}
-                                alt={piMember.name}
-                                className={styles.piImage}
-                            />
-                            <div className={styles.piInfo}>
-                                <h3>{piMember.name}</h3>
-                                <span className={styles.piRole}>{language === 'pt' ? piMember.role_pt : piMember.role_en}</span>
-                                <p>{language === 'pt' ? 'Liderando inovações em pesquisa química.' : 'Leading innovations in chemical research.'}</p>
+                    {teamMembers.length > 0 && (
+                        <div className={styles.carouselContainer}>
+                            <div className={styles.carouselMain}>
+                                {teamMembers.length > 1 && (
+                                    <button onClick={prevMember} className={`${styles.navBtn} ${styles.prevBtn}`} aria-label="Previous">
+                                        <ChevronLeft size={32} />
+                                    </button>
+                                )}
+
+                                <div className={styles.carouselWindow}>
+                                    <div
+                                        className={styles.carouselTrack}
+                                        style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+                                    >
+                                        {teamMembers.map((member) => (
+                                            <div key={member.id} className={styles.carouselSlide}>
+                                                <div className={styles.piHighlight}>
+                                                    <div className={styles.memberContent}>
+                                                        <img
+                                                            src={member.image_url ? `http://localhost:3001${member.image_url}` : '/placeholder-user.jpg'}
+                                                            alt={member.name}
+                                                            className={styles.piImage}
+                                                        />
+                                                        <div className={styles.piInfo}>
+                                                            <h3>{member.name}</h3>
+                                                            <span className={styles.piRole}>
+                                                                {language === 'pt' ? member.role_pt : member.role_en}
+                                                            </span>
+                                                            <p>
+                                                                {member.type === 'pi'
+                                                                    ? (language === 'pt' ? 'Liderando inovações em pesquisa química.' : 'Leading innovations in chemical research.')
+                                                                    : (language === 'pt' ? 'Membro ativo da equipe de pesquisa.' : 'Active member of the research team.')
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {teamMembers.length > 1 && (
+                                    <button onClick={nextMember} className={`${styles.navBtn} ${styles.nextBtn}`} aria-label="Next">
+                                        <ChevronRight size={32} />
+                                    </button>
+                                )}
                             </div>
+
+                            {/* Dots indicator */}
+                            {teamMembers.length > 1 && (
+                                <div className={styles.dots}>
+                                    {teamMembers.map((_, idx) => (
+                                        <span
+                                            key={idx}
+                                            className={`${styles.dot} ${idx === activeIndex ? styles.activeDot : ''}`}
+                                            onClick={() => setActiveIndex(idx)}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

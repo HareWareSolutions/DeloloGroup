@@ -260,9 +260,95 @@
     background: white;
     padding: var(--spacing-xl);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    max-width: 800px;
     margin: 0 auto;
+    position: relative;
+    /* justify-content: space-between; removed */
+}
+
+/* New Carousel Animations */
+.carouselMain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.carouselWindow {
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: var(--radius-lg);
+}
+
+.carouselTrack {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
+}
+
+.carouselSlide {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    /* Space for shadow */
+    display: flex;
+    justify-content: center;
+}
+
+.piHighlight {
+    display: block;
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 800px;
+}
+
+.memberContent {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xl);
+    justify-content: center;
+}
+
+.navBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-primary);
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navBtn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.activeDot {
+    background: var(--color-primary);
 }
 
 .piImage {
@@ -282,8 +368,12 @@
 }
 
 @media (max-width: 768px) {
-    .piHighlight {
+    .memberContent {
         flex-direction: column;
         text-align: center;
+    }
+
+    .piHighlight {
+        padding: var(--spacing-lg);
     }
 }

@@ -56,14 +56,50 @@ function initDb() {
 }
 
 function seedDb() {
+    // Users
     db.get("SELECT count(*) as count FROM users", (err, row) => {
         if (row && row.count === 0) {
             const hash = bcrypt.hashSync('admin123', 8);
             db.run("INSERT INTO users (username, password) VALUES (?, ?)", ['admin', hash]);
+            console.log("Seeded admin user");
         }
     });
 
-    // Seed initial content if empty
+    // Members
+    db.get("SELECT count(*) as count FROM members", (err, row) => {
+        if (row && row.count === 0) {
+            const bioPt = `Doutor em Ciências - Química (2022) e Mestre em Química Inorgânica (2018) pela UFMG, Bacharel em Química (2016) pela UFSCar. MBA em Gestão de Negócios pela USP-ESALQ (2020). Experiência em catálise, química verde e eletroquímica. Foi bolsista CAPES CsF na University of Glasgow e CAPES-PrInt no LIKAT (Alemanha), supervisionado por Matthias Beller. Recebeu diversos prêmios, incluindo Prêmio CAPES de Teses (2023) e CAS Future Leaders (2025). Membro afiliado da ABC para o Lindau Nobel Laureate Meeting. Atualmente pesquisador CAPES-PIPD na UFMG explora valorização de biomassa.`;
+            const bioEn = `Ph.D. in Chemistry (2022) and Master in Inorganic Chemistry (2018) from UFMG. MBA in Business Management from USP-ESALQ. Experience in catalysis, green chemistry, and electrochemistry. Former CAPES fellow at University of Glasgow and LIKAT (Germany). Recipient of multiple awards including CAPES Thesis Award (2023) and CAS Future Leaders (2025). Selected for Lindau Nobel Laureate Meeting. Currently CAPES-PIPD researcher at UFMG exploring biomass valorization.`;
+
+            db.run(`INSERT INTO members (name, role_pt, role_en, type, image_url, bio_pt, bio_en) VALUES 
+                ('Fábio G. Delolo', 'Pesquisador Principal', 'Principal Investigator', 'pi', '/uploads/fabio.jpg', ?, ?),
+                ('Novo Membro', 'Pesquisador', 'Researcher', 'current', '', 'Integrante da equipe.', 'Team member.')
+            `, [bioPt, bioEn]);
+            console.log("Seeded members");
+        }
+    });
+
+    // Publications
+    db.get("SELECT count(*) as count FROM publications", (err, row) => {
+        if (row && row.count === 0) {
+            db.run(`INSERT INTO publications (title_pt, title_en, journal, year, authors, volume, pages, pub_type) VALUES 
+                ('Acoplamento Cruzado Desoxigenativo C(sp3)-N(sp3) Ativado por Catálise Metalofotoredox de Níquel', 'Deoxygenative C(sp3)-N(sp3) Cross-Coupling Enabled by Nickel Metallaphotoredox Catalysis', 'J. Am. Chem. Soc.', 2025, 'R. Chen, T. Kim, N. B. Bissonnette, R. T. Martin, J. R. Martinelli, A. Cabré, D. W. C. MacMillan', '147', '37855-37892', 'Article')
+            `);
+            console.log("Seeded publications");
+        }
+    });
+
+    // News
+    db.get("SELECT count(*) as count FROM news", (err, row) => {
+        if (row && row.count === 0) {
+            db.run(`INSERT INTO news (title_pt, title_en, content_pt, content_en, date, status, category) VALUES 
+                ('Novo site lançado', 'New website launched', 'Temos o prazer de anunciar nosso novo site.', 'We are pleased to announce our new website.', '${new Date().toISOString()}', 'published', 'Congresso/Evento')
+            `);
+            console.log("Seeded news");
+        }
+    });
+
+    // Site Content
     const initialContent = [
         { key: 'hero_title', pt: 'Avançando a Química para um Futuro Sustentável', en: 'Advancing Chemistry for a Sustainable Future' },
         { key: 'hero_subtitle', pt: 'Foco em catálise e química verde.', en: 'Delolo Research Group focuses on catalysis...' }
@@ -136,9 +172,9 @@ app.get('/api/publications', (req, res) => {
 });
 
 app.post('/api/publications', authenticateToken, (req, res) => {
-    const { title, journal, year, doi, authors, image_url, volume, pages, pub_type } = req.body;
-    db.run(`INSERT INTO publications (title, journal, year, doi, authors, image_url, volume, pages, pub_type) VALUES (?,?,?,?,?,?,?,?,?)`,
-        [title, journal, year, doi, authors, image_url, volume, pages, pub_type],
+    const { title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type } = req.body;
+    db.run(`INSERT INTO publications (title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type) VALUES (?,?,?,?,?,?,?,?,?,?)`,
+        [title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type],
         function (err) {
             if (err) res.status(500).json({ error: err.message });
             else res.json({ id: this.lastID });
@@ -147,9 +183,9 @@ app.post('/api/publications', authenticateToken, (req, res) => {
 });
 
 app.put('/api/publications/:id', authenticateToken, (req, res) => {
-    const { title, journal, year, doi, authors, image_url, volume, pages, pub_type } = req.body;
-    db.run(`UPDATE publications SET title=?, journal=?, year=?, doi=?, authors=?, image_url=?, volume=?, pages=?, pub_type=? WHERE id=?`,
-        [title, journal, year, doi, authors, image_url, volume, pages, pub_type, req.params.id],
+    const { title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type } = req.body;
+    db.run(`UPDATE publications SET title_pt=?, title_en=?, journal=?, year=?, doi=?, authors=?, image_url=?, volume=?, pages=?, pub_type=? WHERE id=?`,
+        [title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type, req.params.id],
         function (err) {
             if (err) res.status(500).json({ error: err.message });
             else res.json({ changes: this.changes });

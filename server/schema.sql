@@ -23,7 +23,8 @@ CREATE TABLE IF NOT EXISTS members (
 
 CREATE TABLE IF NOT EXISTS publications (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT,
+  title_pt TEXT,
+  title_en TEXT,
   journal TEXT,
   year INTEGER,
   doi TEXT,

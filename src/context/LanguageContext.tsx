@@ -18,7 +18,7 @@ const translations: Record<string, Record<Language, string>> = {
     'nav.publications': { en: 'Publications', pt: 'Publicações' },
     'nav.values': { en: 'Values', pt: 'Valores' },
     'nav.members': { en: 'Members', pt: 'Membros' },
-    'nav.fabio': { en: 'Prof. Delolo', pt: 'Prof. Delolo' },
+    'nav.fabio': { en: 'Fábio G. Delolo', pt: 'Fábio G. Delolo' },
     'nav.news': { en: 'News', pt: 'Notícias' },
     'nav.contact': { en: 'Contact', pt: 'Contato' },
     'hero.title': { en: 'Advancing Chemistry for a Sustainable Future', pt: 'Avançando a Química para um Futuro Sustentável' },

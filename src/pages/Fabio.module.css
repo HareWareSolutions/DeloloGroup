@@ -1,0 +1,187 @@
+/* Hero Section */
+.hero {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2xl);
+    margin-bottom: var(--spacing-3xl);
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.profileImage {
+    width: 250px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    flex-shrink: 0;
+}
+
+.heroContent {
+    flex: 1;
+}
+
+.name {
+    font-size: 2.5rem;
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.2;
+}
+
+.role {
+    font-size: 1.2rem;
+    color: var(--color-secondary);
+    font-weight: 500;
+    margin-bottom: var(--spacing-md);
+}
+
+.intro {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--color-text-light);
+    max-width: 800px;
+}
+
+/* Section Common */
+.sectionTitle {
+    font-size: 1.8rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xl);
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Timeline / Experience */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: var(--spacing-3xl);
+    border-left: 3px solid #e5e7eb;
+}
+
+.timelineItem {
+    position: relative;
+    margin-bottom: var(--spacing-xl);
+    padding-left: var(--spacing-lg);
+}
+
+.timelineItem::before {
+    content: '';
+    position: absolute;
+    left: -2.6rem;
+    top: 0.4rem;
+    width: 1rem;
+    height: 1rem;
+    background: var(--color-primary);
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 1px #e5e7eb;
+}
+
+.yearBadge {
+    display: inline-block;
+    background: #eef2ff;
+    color: var(--color-primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.itemTitle {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.2rem;
+}
+
+.itemSubtitle {
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+}
+
+.itemDesc {
+    color: #6b7280;
+    line-height: 1.5;
+}
+
+/* Grid for Awards/Education */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.card {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #f3f4f6;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.awardCard {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.iconBox {
+    background: #fef3c7;
+    color: #d97706;
+    padding: 0.8rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.eduIcon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.researchArea {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.researchTitle {
+    color: #166534;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .timeline {
+        padding-left: 1.5rem;
+    }
+}

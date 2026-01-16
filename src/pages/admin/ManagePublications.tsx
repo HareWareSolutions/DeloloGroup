@@ -6,7 +6,8 @@ import MediaLibrary from '../../components/admin/MediaLibrary';
 
 interface Publication {
     id?: number;
-    title: string;
+    title_pt: string;
+    title_en: string;
     journal: string;
     year: number;
     doi: string;
@@ -62,7 +63,7 @@ const ManagePublications: React.FC = () => {
     };
 
     const handleDelete = async (pub: Publication) => {
-        if (!pub.id || !confirm(`Delete publication "${pub.title}"?`)) return;
+        if (!pub.id || !confirm(`Delete publication "${pub.title_en}"?`)) return;
         const token = localStorage.getItem('authToken');
         await fetch(`http://localhost:3001/api/publications/${pub.id}`, {
             method: 'DELETE',
@@ -103,7 +104,8 @@ const ManagePublications: React.FC = () => {
     const startNew = () => {
         setIsViewOnly(false);
         setEditingPub({
-            title: '',
+            title_pt: '',
+            title_en: '',
             journal: '',
             year: new Date().getFullYear(),
             doi: '',
@@ -123,7 +125,7 @@ const ManagePublications: React.FC = () => {
             render: (p: Publication) => p.image_url ?
                 <img src={`http://localhost:3001${p.image_url}`} alt="cover" style={{ height: 30 }} /> : null
         },
-        { key: 'title', label: 'Title' },
+        { key: 'title_en', label: 'Title (EN)' },
         { key: 'journal', label: 'Journal' },
     ];
 
@@ -148,7 +150,7 @@ const ManagePublications: React.FC = () => {
                     setEditingPub(p);
                 }}
                 onDelete={handleDelete}
-                filterKeys={['title', 'authors', 'journal']}
+                filterKeys={['title_en', 'title_pt', 'authors', 'journal']}
                 filterPlaceholder="Search publications..."
             />
 
@@ -160,11 +162,21 @@ const ManagePublications: React.FC = () => {
                         </div>
 
                         <div className={styles.formGroup}>
-                            <label>Title</label>
+                            <label>Title (English)</label>
                             <textarea
-                                value={editingPub.title}
-                                onChange={e => setEditingPub({ ...editingPub, title: e.target.value })}
+                                value={editingPub.title_en}
+                                onChange={e => setEditingPub({ ...editingPub, title_en: e.target.value })}
                                 required
+                                rows={2}
+                                disabled={isViewOnly}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>Title (Portuguese)</label>
+                            <textarea
+                                value={editingPub.title_pt}
+                                onChange={e => setEditingPub({ ...editingPub, title_pt: e.target.value })}
                                 rows={2}
                                 disabled={isViewOnly}
                             />
