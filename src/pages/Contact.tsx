@@ -1,10 +1,17 @@
 import React from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Contact: React.FC = () => {
+    const { t, language } = useLanguage();
+
     return (
         <div className="container section">
-            <h1>Contact Us</h1>
-            <p>Get in touch.</p>
+            <h1>{t('nav.contact')}</h1>
+            <p>
+                {language === 'pt'
+                    ? 'Entre em contato conosco.'
+                    : 'Get in touch with us.'}
+            </p>
         </div>
     );
 };

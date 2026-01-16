@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Globe, Search } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext'; // Import context
 import styles from './Header.module.css';
 
 const Header: React.FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const location = useLocation();
+    const { t, language, setLanguage } = useLanguage(); // Use context
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+    const toggleLanguage = () => {
+        setLanguage(language === 'en' ? 'pt' : 'en');
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -24,13 +29,13 @@ const Header: React.FC = () => {
     }, [location]);
 
     const navLinks = [
-        { name: 'Research', path: '/research' },
-        { name: 'Publications', path: '/publications' },
-        { name: 'Values', path: '/values' },
-        { name: 'Members', path: '/members' },
-        { name: 'Prof. Delolo', path: '/fabio-delolo' },
-        { name: 'News', path: '/news' },
-        { name: 'Contact', path: '/contact' },
+        { name: t('nav.research'), path: '/research' },
+        { name: t('nav.publications'), path: '/publications' },
+        { name: t('nav.values'), path: '/values' },
+        { name: t('nav.members'), path: '/members' },
+        { name: t('nav.fabio'), path: '/fabio-delolo' },
+        { name: t('nav.news'), path: '/news' },
+        { name: t('nav.contact'), path: '/contact' },
     ];
 
     return (
@@ -58,9 +63,18 @@ const Header: React.FC = () => {
                         <button className={styles.iconButton} aria-label="Search">
                             <Search size={20} />
                         </button>
-                        <button className={styles.iconButton} aria-label="Switch Language">
+                        <button
+                            className={styles.iconButton}
+                            aria-label="Switch Language"
+                            onClick={toggleLanguage}
+                        >
                             <Globe size={20} />
+                            <span style={{ fontSize: '0.8rem', marginLeft: '4px', fontWeight: 'bold' }}>
+                                {language.toUpperCase()}
+                            </span>
                         </button>
+                        {/* Admin Link for convenience (optional) */}
+                        {/* <Link to="/admin/login" className={styles.iconButton}><Settings size={20}/></Link> */}
                     </div>
                 </nav>
 

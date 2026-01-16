@@ -12,7 +12,13 @@ CREATE TABLE IF NOT EXISTS members (
   bio_pt TEXT,
   bio_en TEXT,
   image_url TEXT,
-  type TEXT CHECK(type IN ('current', 'alumni', 'pi'))
+  type TEXT CHECK(type IN ('current', 'alumni', 'pi')) DEFAULT 'current',
+  order_index INTEGER DEFAULT 0,
+  lattes TEXT,
+  linkedin TEXT,
+  orcid TEXT,
+  google_scholar TEXT,
+  current_workplace TEXT
 );
 
 CREATE TABLE IF NOT EXISTS publications (
@@ -21,7 +27,11 @@ CREATE TABLE IF NOT EXISTS publications (
   journal TEXT,
   year INTEGER,
   doi TEXT,
-  authors TEXT
+  authors TEXT,
+  image_url TEXT,
+  volume TEXT,
+  pages TEXT,
+  pub_type TEXT
 );
 
 CREATE TABLE IF NOT EXISTS news (
@@ -31,5 +41,13 @@ CREATE TABLE IF NOT EXISTS news (
   content_pt TEXT,
   content_en TEXT,
   date TEXT,
-  image_url TEXT
+  image_url TEXT,
+  category TEXT,
+  status TEXT DEFAULT 'draft'
+);
+
+CREATE TABLE IF NOT EXISTS site_content (
+  key TEXT PRIMARY KEY,
+  content_pt TEXT,
+  content_en TEXT
 );

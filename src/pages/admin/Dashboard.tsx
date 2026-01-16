@@ -2,11 +2,38 @@ import React from 'react';
 import styles from './Admin.module.css';
 
 const Dashboard: React.FC = () => {
-    // In a real app we'd fetch these stats
+    const [counts, setCounts] = React.useState({ members: 0, publications: 0, news: 0 });
+
+    React.useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const [membersRes, pubsRes, newsRes] = await Promise.all([
+                    fetch('http://localhost:3001/api/members'),
+                    fetch('http://localhost:3001/api/publications'),
+                    fetch('http://localhost:3001/api/news')
+                ]);
+
+                const members = await membersRes.json();
+                const pubs = await pubsRes.json();
+                const news = await newsRes.json();
+
+                setCounts({
+                    members: Array.isArray(members) ? members.length : 0,
+                    publications: Array.isArray(pubs) ? pubs.length : 0,
+                    news: Array.isArray(news) ? news.length : 0
+                });
+            } catch (error) {
+                console.error("Failed to fetch dashboard stats", error);
+            }
+        };
+
+        fetchStats();
+    }, []);
+
     const stats = [
-        { label: 'Total Members', value: 12 },
-        { label: 'Publications', value: 45 },
-        { label: 'News Articles', value: 8 },
+        { label: 'Total Members', value: counts.members },
+        { label: 'Publications', value: counts.publications },
+        { label: 'News Articles', value: counts.news },
     ];
 
     return (

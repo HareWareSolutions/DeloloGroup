@@ -1,76 +1,194 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 import styles from './Home.module.css';
 
+interface NewsItem {
+    id: number;
+    title_pt: string;
+    title_en: string;
+    date: string;
+}
+
+interface Publication {
+    id: number;
+    title: string;
+    journal: string;
+    year: number;
+    image_url?: string;
+}
+
+interface Member {
+    id: number;
+    name: string;
+    role_pt: string;
+    role_en: string;
+    image_url: string;
+    type: string;
+}
+
 const Home: React.FC = () => {
+    const { t, language } = useLanguage();
+    const [latestNews, setLatestNews] = useState<NewsItem[]>([]);
+    const [publications, setPublications] = useState<Publication[]>([]);
+    const [piMember, setPiMember] = useState<Member | null>(null);
+
+    useEffect(() => {
+        // Fetch News
+        fetch('http://localhost:3001/api/news')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    const published = data.filter((n: any) => n.status === 'published');
+                    setLatestNews(published.slice(0, 2));
+                }
+            })
+            .catch(err => console.error(err));
+
+        // Fetch Publications
+        fetch('http://localhost:3001/api/publications')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    const sorted = data.sort((a: Publication, b: Publication) => b.year - a.year);
+                    setPublications(sorted.slice(0, 3));
+                }
+            })
+            .catch(err => console.error(err));
+
+        // Fetch Members (Find PI)
+        fetch('http://localhost:3001/api/members')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    const pi = data.find((m: Member) => m.type === 'pi');
+                    if (pi) setPiMember(pi);
+                }
+            })
+            .catch(err => console.error(err));
+    }, []);
+
     return (
         <div className={styles.home}>
             {/* Hero Section */}
             <section className={styles.hero}>
                 <div className={styles.heroContent}>
                     <h1 className={styles.heroTitle}>
-                        Advancing Chemistry for a <span className="text-secondary">Sustainable Future</span>
+                        {t('hero.title')}
                     </h1>
                     <p className={styles.heroSubtitle}>
-                        Delolo Research Group focuses on catalysis, green chemistry, and the transformation of scientific knowledge into global solutions.
+                        {language === 'pt'
+                            ? 'O Grupo de Pesquisa Delolo foca em catálise, química verde e na transformação do conhecimento científico em soluções globais.'
+                            : 'Delolo Research Group focuses on catalysis, green chemistry, and the transformation of scientific knowledge into global solutions.'}
                     </p>
                     <div className={styles.heroActions}>
                         <Link to="/research" className={styles.primaryButton}>
-                            Explore Research
+                            {language === 'pt' ? 'Nossa Pesquisa' : 'Explore Research'}
                         </Link>
                         <Link to="/publications" className={styles.secondaryButton}>
-                            Our Publications <ArrowRight size={18} />
+                            {language === 'pt' ? 'Publicações' : 'Our Publications'} <ArrowRight size={18} />
                         </Link>
                     </div>
                 </div>
                 <div className={styles.heroVisual}>
-                    {/* Abstract molecule or lab glass placeholder */}
                     <div className={styles.abstractShape}></div>
                 </div>
             </section>
 
-            {/* Featured Research Preview */}
+            {/* 1. Research Preview - EMPHASIZED */}
             <section className={`${styles.section} ${styles.researchPreview}`}>
                 <div className="container">
                     <div className="text-center">
-                        <h2 className="section-title">Scientific Focus</h2>
-                        <p className="section-desc">Pioneering new pathways in catalytic processes.</p>
+                        <h2 className={styles.megaTitle}>{language === 'pt' ? 'PESQUISA DE PONTA' : 'CUTTING-EDGE RESEARCH'}</h2>
+                        <h3 className="section-title">{language === 'pt' ? 'Foco Científico' : 'Scientific Focus'}</h3>
+                        <p className="section-desc">
+                            {language === 'pt' ? 'Pioneirismo em novos caminhos para processos catalíticos e sustentabilidade.' : 'Pioneering new pathways in catalytic processes and sustainability.'}
+                        </p>
                     </div>
 
                     <div className="scientific-grid">
                         <div className={`glass-panel ${styles.featureCard}`}>
-                            <h3>Catalysis</h3>
-                            <p>Developing novel catalysts for efficiency.</p>
+                            <h3>{language === 'pt' ? 'Catálise' : 'Catalysis'}</h3>
+                            <p>{language === 'pt' ? 'Desenvolvimento de novos catalisadores para eficiência.' : 'Developing novel catalysts for efficiency.'}</p>
                         </div>
                         <div className={`glass-panel ${styles.featureCard}`}>
-                            <h3>Green Chemistry</h3>
-                            <p>Sustainable processes for waste reduction.</p>
+                            <h3>{language === 'pt' ? 'Química Verde' : 'Green Chemistry'}</h3>
+                            <p>{language === 'pt' ? 'Processos sustentáveis para redução de resíduos.' : 'Sustainable processes for waste reduction.'}</p>
                         </div>
                         <div className={`glass-panel ${styles.featureCard}`}>
-                            <h3>Material Science</h3>
-                            <p>Innovative materials for industrial application.</p>
+                            <h3>{language === 'pt' ? 'Ciência dos Materiais' : 'Material Science'}</h3>
+                            <p>{language === 'pt' ? 'Materiais inovadores para aplicação industrial.' : 'Innovative materials for industrial application.'}</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Latest News Preview */}
+            {/* 2. Publications Preview */}
+            <section className={`${styles.section} ${styles.altBackground}`}>
+                <div className="container">
+                    <div className={styles.sectionHeader}>
+                        <h2 className="section-title">{language === 'pt' ? 'Publicações Recentes' : 'Recent Publications'}</h2>
+                        <Link to="/publications" className={styles.linkArrow}>
+                            {language === 'pt' ? 'Ver todas' : 'View all'} <ArrowRight size={16} />
+                        </Link>
+                    </div>
+                    <div className={styles.pubGrid}>
+                        {publications.map(pub => (
+                            <div key={pub.id} className={styles.pubCard}>
+                                <span className={styles.pubYear}>{pub.year}</span>
+                                <h3 className={styles.pubTitle}>{pub.title}</h3>
+                                <div className={styles.pubJournal}>{pub.journal}</div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* 3. Members Preview (PI Focus) */}
             <section className={styles.section}>
                 <div className="container">
-                    <h2 className="section-title">Latest Updates</h2>
+                    <div className={styles.sectionHeader}>
+                        <h2 className="section-title">{language === 'pt' ? 'Nosso Time' : 'Our Team'}</h2>
+                        <Link to="/members" className={styles.linkArrow}>
+                            {language === 'pt' ? 'Conheça o grupo' : 'Meet the group'} <ArrowRight size={16} />
+                        </Link>
+                    </div>
+                    {piMember && (
+                        <div className={styles.piHighlight}>
+                            <img
+                                src={piMember.image_url ? `http://localhost:3001${piMember.image_url}` : '/placeholder-user.jpg'}
+                                alt={piMember.name}
+                                className={styles.piImage}
+                            />
+                            <div className={styles.piInfo}>
+                                <h3>{piMember.name}</h3>
+                                <span className={styles.piRole}>{language === 'pt' ? piMember.role_pt : piMember.role_en}</span>
+                                <p>{language === 'pt' ? 'Liderando inovações em pesquisa química.' : 'Leading innovations in chemical research.'}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            {/* 4. News Preview */}
+            <section className={`${styles.section} ${styles.altBackground}`}>
+                <div className="container">
+                    <h2 className="section-title">{language === 'pt' ? 'Notícias & Atualizações' : 'News & Updates'}</h2>
                     <div className={styles.newsGrid}>
-                        {/* Mock news */}
-                        <div className={styles.newsItem}>
-                            <span className={styles.date}>Jan 15, 2026</span>
-                            <h3>New paper published in Journal of Catalysis</h3>
-                            <Link to="/news/1">Read more</Link>
-                        </div>
-                        <div className={styles.newsItem}>
-                            <span className={styles.date}>Dec 10, 2025</span>
-                            <h3>Prof. Delolo awarded specifically...</h3>
-                            <Link to="/news/2">Read more</Link>
-                        </div>
+                        {latestNews.length > 0 ? latestNews.map(item => (
+                            <div key={item.id} className={styles.newsItem}>
+                                <span className={styles.date}>
+                                    {new Date(item.date).toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US', {
+                                        month: 'short', day: 'numeric', year: 'numeric'
+                                    })}
+                                </span>
+                                <h3>{language === 'pt' ? item.title_pt : item.title_en}</h3>
+                                <Link to="/news">{language === 'pt' ? 'Ler mais' : 'Read more'}</Link>
+                            </div>
+                        )) : (
+                            <p>{language === 'pt' ? 'Nenhuma notícia recente.' : 'No recent news.'}</p>
+                        )}
                     </div>
                 </div>
             </section>
