@@ -18,6 +18,7 @@ interface Member {
     orcid?: string;
     google_scholar?: string;
     current_workplace?: string;
+    supervision_type?: 'advisor' | 'co_advisor';
 }
 
 const ManageMembers: React.FC = () => {
@@ -60,6 +61,8 @@ const ManageMembers: React.FC = () => {
         if (!editingMember) return;
 
         const token = localStorage.getItem('authToken');
+        console.log("Token being used for save:", token); // Debug log
+
         const method = editingMember.id ? 'PUT' : 'POST';
         const url = editingMember.id
             ? `http://localhost:3001/api/members/${editingMember.id}`
@@ -95,6 +98,7 @@ const ManageMembers: React.FC = () => {
             bio_en: '',
             image_url: '',
             type: 'current',
+            supervision_type: 'advisor',
             lattes: '',
             linkedin: '',
             orcid: '',
@@ -118,6 +122,21 @@ const ManageMembers: React.FC = () => {
         { key: 'name', label: 'Name' },
         { key: 'role_en', label: 'Role' },
         { key: 'type', label: 'Type', render: (m: Member) => <span className={styles.badge}>{m.type}</span> },
+        {
+            key: 'supervision_type',
+            label: 'Supervision',
+            render: (m: Member) => (
+                <span style={{
+                    fontSize: '0.8rem',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    background: m.supervision_type === 'advisor' ? '#ecfdf5' : '#fffbeb',
+                    color: m.supervision_type === 'advisor' ? '#065f46' : '#92400e'
+                }}>
+                    {m.supervision_type === 'advisor' ? 'Advisor' : 'Co-Advisor'}
+                </span>
+            )
+        },
     ];
 
     return (
@@ -198,16 +217,43 @@ const ManageMembers: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className={styles.formGroup}>
-                            <label>Type</label>
-                            <select
-                                value={editingMember.type}
-                                onChange={e => setEditingMember({ ...editingMember, type: e.target.value as any })}
-                            >
-                                <option value="current">Current Member</option>
-                                <option value="alumni">Alumni</option>
-                                <option value="pi">Principal Investigator</option>
-                            </select>
+                        <div className={styles.row}>
+                            <div className={styles.formGroup}>
+                                <label>Type</label>
+                                <select
+                                    value={editingMember.type}
+                                    onChange={e => setEditingMember({ ...editingMember, type: e.target.value as any })}
+                                >
+                                    <option value="current">Current Member</option>
+                                    <option value="alumni">Alumni</option>
+                                    <option value="pi">Principal Investigator</option>
+                                </select>
+                            </div>
+                            <div className={styles.formGroup}>
+                                <label>Supervision</label>
+                                <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 'normal' }}>
+                                        <input
+                                            type="radio"
+                                            name="supervision_type"
+                                            value="advisor"
+                                            checked={editingMember.supervision_type !== 'co_advisor'} // Default to advisor if null
+                                            onChange={() => setEditingMember({ ...editingMember, supervision_type: 'advisor' })}
+                                        />
+                                        Advisor (Orientação)
+                                    </label>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 'normal' }}>
+                                        <input
+                                            type="radio"
+                                            name="supervision_type"
+                                            value="co_advisor"
+                                            checked={editingMember.supervision_type === 'co_advisor'}
+                                            onChange={() => setEditingMember({ ...editingMember, supervision_type: 'co_advisor' })}
+                                        />
+                                        Co-Advisor (Coorientação)
+                                    </label>
+                                </div>
+                            </div>
                         </div>
 
                         <div className={styles.formGroup}>

@@ -1,0 +1,129 @@
+.valuesPage {
+    padding-bottom: var(--spacing-3xl);
+}
+
+.header {
+    background-color: var(--color-background-alt);
+    padding: 8rem 0 4rem;
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.headerTitle {
+    font-size: 3.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+    position: relative;
+    z-index: 2;
+}
+
+.headerSubtitle {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.introSection {
+    margin-bottom: var(--spacing-2xl);
+    text-align: center;
+}
+
+.mainMission {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.valueCard {
+    background: white;
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-top: 5px solid transparent;
+}
+
+.valueCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-top-color: var(--color-primary);
+}
+
+.cardTitle {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cardText {
+    font-size: 1.05rem;
+    color: #444;
+    line-height: 1.7;
+}
+
+.fullWidthCard {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(89, 179, 41, 0.05) 0%, rgba(255, 255, 255, 1) 100%);
+    border-left: 8px solid var(--color-primary);
+    border-top: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-xl);
+    padding: 3rem;
+    /* Added padding to fix layout */
+}
+
+.fullWidthContent {
+    flex: 1;
+}
+
+.visualSide {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sketchImage {
+    max-width: 100%;
+    height: auto;
+    opacity: 0.9;
+    border-radius: var(--radius-md);
+    mix-blend-mode: multiply;
+}
+
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fullWidthCard {
+        flex-direction: column-reverse;
+        padding: 2rem;
+    }
+
+    .headerTitle {
+        font-size: 2.5rem;
+    }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import styles from './Fabio.module.css';
-import { GraduationCap, Award, Briefcase, Globe, Star, Zap } from 'lucide-react';
+import { GraduationCap, Award, Briefcase, Globe, Star, Zap, FileText, Fingerprint, Linkedin } from 'lucide-react';
 
 const Fabio: React.FC = () => {
     const { language } = useLanguage();
@@ -126,13 +126,63 @@ const Fabio: React.FC = () => {
                 <div className={styles.heroContent}>
                     <h1 className={styles.name}>Fábio G. Delolo</h1>
                     <p className={styles.role}>
-                        {language === 'pt' ? 'Pesquisador de Pós-Doutorado (CAPES-PIPD) | UFMG' : 'Postdoctoral Researcher (CAPES-PIPD) | UFMG'}
+                        {language === 'pt' ? 'Professor Assistente | UFJF' : 'Assistant Professor | UFJF'}
                     </p>
                     <p className={styles.intro}>
                         {language === 'pt'
                             ? 'Dedica-se a explorar aspectos sustentáveis para a valorização da matéria prima biorrenovável utilizando catalisadores homogêneos, heterogêneos e eletroquímica.'
                             : 'Dedicated to exploring sustainable aspects for the valorization of bio-renewable raw materials using homogeneous and heterogeneous catalysts and electrochemistry.'}
                     </p>
+
+                    {/* Social/Academic Links */}
+                    <div className={styles.socialButtons}>
+                        <a href="http://lattes.cnpq.br/9249500644603471" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
+                            <FileText size={18} /> Lattes
+                        </a>
+                        <a href="https://orcid.org/0000-0001-7968-9506" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
+                            <Fingerprint size={18} /> ORCID
+                        </a>
+                        <a href="https://scholar.google.com/citations?user=010MEDcAAAAJ&hl=pt-BR" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
+                            <GraduationCap size={18} /> Google Scholar
+                        </a>
+                        <a href="https://www.linkedin.com/in/f%C3%A1bio-g-delolo/" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
+                            <Linkedin size={18} /> LinkedIn
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {/* Biography Section */}
+            <div className={styles.biographySection}>
+                <h2 className={styles.sectionTitle}>
+                    {language === 'pt' ? 'Biografia' : 'Biography'}
+                </h2>
+                <div className={styles.bioText}>
+                    {language === 'pt' ? (
+                        <>
+                            <p>
+                                Fábio Godoy Delolo obteve seu Bacharelado em Química (2016) pela Universidade Federal de São Carlos (UFSCar), seguido por Mestrado (2018) e Doutorado (2022) em Química pela Universidade Federal de Minas Gerais (UFMG). Ele também possui MBA em Gestão de Negócios pela USP–ESALQ (2020).
+                            </p>
+                            <p>
+                                Como bolsista do programa Ciência sem Fronteiras da CAPES, realizou pesquisa na University of Glasgow (Reino Unido) entre 2014 e 2015 sob supervisão do Prof. Andrew Sutherland. Durante seu doutorado, foi contemplado com bolsa CAPES-PrInt e desenvolveu parte de sua pesquisa no Leibniz Institute for Catalysis (LIKAT), Alemanha, trabalhando com o Prof. Matthias Beller.
+                            </p>
+                            <p>
+                                Recebeu diversas distinções, incluindo o Prêmio Victor Teixeira da Silva (SBCat, 2021), o Prêmio Jovem Pesquisador (RSC/JP-SBQ, 2021), o Prêmio de Teses da UFMG e o Grande Prêmio de Teses (2023), além do Prêmio CAPES de Tese (2023). Foi selecionado como CAS Future Leader (2025) e pela Academia Brasileira de Ciências para representar o Brasil no 74º Lindau Nobel Laureate Meeting. Uma de suas tecnologias foi selecionada para o programa CATALISA ICT/SEBRAE.
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <p>
+                                Fábio Godoy Delolo received his B.Sc. in Chemistry (2016) from the Federal University of São Carlos (UFSCar), followed by an M.Sc. (2018) and a Ph.D. (2022) in Chemistry from the Federal University of Minas Gerais (UFMG). He also holds an MBA in Business Management from USP–ESALQ (2020).
+                            </p>
+                            <p>
+                                As a CAPES Science without Borders fellow, he conducted research at the University of Glasgow (UK) from 2014 to 2015 under the supervision of Prof. Andrew Sutherland. During his Ph.D., he was awarded a CAPES-PrInt fellowship and carried out part of his doctoral research at the Leibniz Institute for Catalysis (LIKAT), Germany, working with Prof. Matthias Beller.
+                            </p>
+                            <p>
+                                He has received several distinctions, including the Victor Teixeira da Silva Prize (SBCat, 2021), the Young Researcher Award (RSC/JP-SBQ, 2021), the UFMG Thesis Award and Grand Thesis Prize (2023), and the CAPES Thesis Award (2023). He was selected as a CAS Future Leader (2025) and by the Brazilian Academy of Sciences to represent Brazil at the 74th Lindau Nobel Laureate Meeting. One of his technologies was selected for the CATALISA ICT/SEBRAE program.
+                            </p>
+                        </>
+                    )}
                 </div>
             </div>
 

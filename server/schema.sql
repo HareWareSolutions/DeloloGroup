@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS members (
   linkedin TEXT,
   orcid TEXT,
   google_scholar TEXT,
-  current_workplace TEXT
+  current_workplace TEXT,
+  supervision_type TEXT DEFAULT 'advisor'
 );
 
 CREATE TABLE IF NOT EXISTS publications (

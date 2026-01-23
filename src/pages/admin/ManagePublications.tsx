@@ -257,6 +257,7 @@ const ManagePublications: React.FC = () => {
                                     <option value="Article">Article</option>
                                     <option value="Book">Book</option>
                                     <option value="Patent">Patent</option>
+                                    <option value="Cover">Cover</option>
                                     <option value="Conference">Conference</option>
                                 </select>
                             </div>

@@ -285,9 +285,9 @@ app.get('/api/members/:id', (req, res) => {
 });
 
 app.post('/api/members', authenticateToken, (req, res) => {
-    const { name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace } = req.body;
-    db.run(`INSERT INTO members (name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
-        [name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace],
+    const { name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace, supervision_type } = req.body;
+    db.run(`INSERT INTO members (name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace, supervision_type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace, supervision_type || 'advisor'],
         function (err) {
             if (err) res.status(500).json({ error: err.message });
             else res.json({ id: this.lastID });
@@ -296,9 +296,9 @@ app.post('/api/members', authenticateToken, (req, res) => {
 });
 
 app.put('/api/members/:id', authenticateToken, (req, res) => {
-    const { name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace } = req.body;
-    db.run(`UPDATE members SET name=?, role_pt=?, role_en=?, bio_pt=?, bio_en=?, image_url=?, type=?, lattes=?, linkedin=?, orcid=?, google_scholar=?, current_workplace=? WHERE id=?`,
-        [name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace, req.params.id],
+    const { name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace, supervision_type } = req.body;
+    db.run(`UPDATE members SET name=?, role_pt=?, role_en=?, bio_pt=?, bio_en=?, image_url=?, type=?, lattes=?, linkedin=?, orcid=?, google_scholar=?, current_workplace=?, supervision_type=? WHERE id=?`,
+        [name, role_pt, role_en, bio_pt, bio_en, image_url, type, lattes, linkedin, orcid, google_scholar, current_workplace, supervision_type || 'advisor', req.params.id],
         function (err) {
             if (err) res.status(500).json({ error: err.message });
             else res.json({ changes: this.changes });

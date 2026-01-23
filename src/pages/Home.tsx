@@ -119,26 +119,29 @@ const Home: React.FC = () => {
             {/* 1. Research Preview - EMPHASIZED */}
             <section className={`${styles.section} ${styles.researchPreview}`}>
                 <div className="container">
-                    <div className="text-center">
-                        <h2 className={styles.megaTitle}>{language === 'pt' ? 'PESQUISA DE PONTA' : 'CUTTING-EDGE RESEARCH'}</h2>
-                        <h3 className="section-title">{language === 'pt' ? 'Foco Científico' : 'Scientific Focus'}</h3>
-                        <p className="section-desc">
-                            {language === 'pt' ? 'Pioneirismo em novos caminhos para processos catalíticos e sustentabilidade.' : 'Pioneering new pathways in catalytic processes and sustainability.'}
+                    <div className={styles.researchIntroCard}>
+                        <h2 className={styles.researchIntroTitle}>
+                            {language === 'pt' ? 'Um pouco sobre a nossa pesquisa' : 'A bit about our research'}
+                        </h2>
+                        <p className={styles.researchIntroText}>
+                            {language === 'pt'
+                                ? 'Desenvolver pesquisa de excelência em química prebiótica, design de ligantes e valorização de biorenováveis. Contribuindo para o avanço científico e formação de recursos humanos qualificados.'
+                                : 'Developing excellence research in prebiotic chemistry, ligand design, and renewable biomass valorization. Contributing to scientific advancement and the training of qualified human resources.'}
                         </p>
                     </div>
 
                     <div className="scientific-grid">
                         <div className={`glass-panel ${styles.featureCard}`}>
-                            <h3>{language === 'pt' ? 'Catálise' : 'Catalysis'}</h3>
-                            <p>{language === 'pt' ? 'Desenvolvimento de novos catalisadores para eficiência.' : 'Developing novel catalysts for efficiency.'}</p>
+                            <h3>{language === 'pt' ? 'Química (Catálise) Prebiótica' : 'Prebiotic Chemistry (Catalysis)'}</h3>
+                            <p>{language === 'pt' ? 'Investigação dos processos químicos e catáliticos que podem ter contribuído para a origem da vida na terra, explorando reações prebióticas e mecanismos de formação de biomoléculas.' : 'Investigation of the chemical and catalytic processes that may have contributed to the origin of life on Earth, exploring prebiotic reactions and mechanisms of biomolecule formation.'}</p>
                         </div>
                         <div className={`glass-panel ${styles.featureCard}`}>
-                            <h3>{language === 'pt' ? 'Química Verde' : 'Green Chemistry'}</h3>
-                            <p>{language === 'pt' ? 'Processos sustentáveis para redução de resíduos.' : 'Sustainable processes for waste reduction.'}</p>
+                            <h3>{language === 'pt' ? 'Design de Ligantes' : 'Ligand Design'}</h3>
+                            <p>{language === 'pt' ? 'Desenvolvimento e caracterização de novos ligantes para aplicações em catálise, medicina e ciência de materiais. Utilizando abordagens computacionais e experimentais.' : 'Development and characterization of new ligands for applications in catalysis, medicine, and materials science. Using computational and experimental approaches.'}</p>
                         </div>
                         <div className={`glass-panel ${styles.featureCard}`}>
-                            <h3>{language === 'pt' ? 'Ciência dos Materiais' : 'Material Science'}</h3>
-                            <p>{language === 'pt' ? 'Materiais inovadores para aplicação industrial.' : 'Innovative materials for industrial application.'}</p>
+                            <h3>{language === 'pt' ? 'Valorização de Biorenováveis' : 'Renewable Biomass Valorization'}</h3>
+                            <p>{language === 'pt' ? 'Transformação de biomassa e compostos biorenováveis em produtos de alto valor agregado através de processos cataliticos sustentáveis e economicamente viáveis.' : 'Transforming biomass and renewable bio-products into high-value-added products through sustainable and economically viable catalytic processes.'}</p>
                         </div>
                     </div>
                 </div>

@@ -1,14 +1,10 @@
-.home {
-    /* overflow-x: hidden; */
-}
-
 .hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 85vh;
-    /* Large hero */
-    padding: 0 var(--spacing-xl);
+    min-height: 60vh;
+    /* Reduced from 85vh */
+    padding: var(--spacing-xl) var(--spacing-xl) 0;
     max-width: 1400px;
     margin: 0 auto;
     position: relative;
@@ -376,4 +372,55 @@
     .piHighlight {
         padding: var(--spacing-lg);
     }
+}
+
+.researchPreview {
+    padding-top: 3rem;
+    /* Moderate gap */
+    margin-top: 0;
+    position: relative;
+    z-index: 5;
+}
+
+.researchIntroCard {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: 2rem;
+    /* Reduced padding */
+    max-width: 750px;
+    /* Reduced width */
+    margin: 0 auto var(--spacing-2xl);
+    border-left: 6px solid var(--color-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.researchIntroCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    /* Custom stronger shadow */
+    border-left-width: 8px;
+    /* Subtle interaction */
+}
+
+.researchIntroTitle {
+    color: var(--color-primary);
+    font-size: 1.75rem;
+    /* Smaller title */
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-transform: none;
+}
+
+.researchIntroText {
+    font-size: 1.05rem;
+    /* Smaller text */
+    color: #333;
+    line-height: 1.6;
+    max-width: 680px;
+    /* Tighter text block */
 }

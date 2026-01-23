@@ -18,6 +18,7 @@ interface Member {
     orcid?: string;
     google_scholar?: string;
     current_workplace?: string;
+    supervision_type?: 'advisor' | 'co_advisor';
 }
 
 const MemberProfile: React.FC = () => {
@@ -64,6 +65,25 @@ const MemberProfile: React.FC = () => {
 
                 <div className={styles.info}>
                     <h1 className={styles.name}>{member.name}</h1>
+
+                    {member.supervision_type && member.type !== 'pi' && (
+                        <div style={{ marginBottom: '0.5rem' }}>
+                            <span style={{
+                                fontSize: '0.9rem',
+                                fontWeight: 600,
+                                padding: '4px 10px',
+                                borderRadius: '4px',
+                                backgroundColor: member.supervision_type === 'advisor' ? '#ecfdf5' : '#fffbeb',
+                                color: member.supervision_type === 'advisor' ? '#065f46' : '#92400e',
+                                textTransform: 'uppercase'
+                            }}>
+                                {member.supervision_type === 'advisor'
+                                    ? (language === 'pt' ? 'Orientação' : 'Advisor')
+                                    : (language === 'pt' ? 'Coorientação' : 'Co-Advisor')}
+                            </span>
+                        </div>
+                    )}
+
                     <div className={styles.role}>
                         {language === 'pt' ? member.role_pt : member.role_en}
                     </div>

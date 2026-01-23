@@ -19,6 +19,7 @@ interface Member {
     orcid?: string;
     google_scholar?: string;
     current_workplace?: string;
+    supervision_type?: 'advisor' | 'co_advisor';
 }
 
 const Members: React.FC = () => {
@@ -46,9 +47,22 @@ const Members: React.FC = () => {
             });
     }, []);
 
+    const sortMembers = (list: Member[]) => {
+        return list.sort((a, b) => {
+            // Priority: Advisor (or undefined) < Co-Advisor
+            const typeA = a.supervision_type || 'advisor';
+            const typeB = b.supervision_type || 'advisor';
+
+            if (typeA !== typeB) {
+                return typeA === 'advisor' ? -1 : 1;
+            }
+            return a.order_index - b.order_index;
+        });
+    };
+
     const pi = members.filter(m => m.type === 'pi');
-    const current = members.filter(m => m.type === 'current');
-    const alumni = members.filter(m => m.type === 'alumni');
+    const current = sortMembers(members.filter(m => m.type === 'current'));
+    const alumni = sortMembers(members.filter(m => m.type === 'alumni'));
 
     const renderGrid = (list: Member[]) => (
         <div className={styles.grid}>
@@ -65,6 +79,15 @@ const Members: React.FC = () => {
                         <Link to={`/members/${member.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <h3 className={styles.name}>{member.name}</h3>
                         </Link>
+
+                        {(member.supervision_type && member.type !== 'pi') && (
+                            <span className={`${styles.supervision} ${member.supervision_type === 'advisor' ? styles.supervisionAdvisor : styles.supervisionCoAdvisor}`}>
+                                {member.supervision_type === 'advisor'
+                                    ? (language === 'pt' ? 'Orientação' : 'Advisor')
+                                    : (language === 'pt' ? 'Coorientação' : 'Co-Advisor')}
+                            </span>
+                        )}
+
                         <span className={styles.role}>
                             {language === 'pt' ? member.role_pt : member.role_en}
                         </span>
