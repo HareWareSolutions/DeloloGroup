@@ -57,11 +57,27 @@ function initDb() {
 
 function seedDb() {
     // Users
+    const targetUser = 'fabiodelolo@hotmail.com';
+    const targetPass = 'Fabio@2026@DRG';
+
+    db.get("SELECT * FROM users WHERE username = ?", [targetUser], (err, row) => {
+        const hash = bcrypt.hashSync(targetPass, 8);
+        if (!row) {
+            db.run("INSERT INTO users (username, password) VALUES (?, ?)", [targetUser, hash]);
+            console.log("Created target admin user");
+        } else {
+            db.run("UPDATE users SET password = ? WHERE username = ?", [hash, targetUser]);
+            console.log("Updated target admin user password");
+        }
+    });
+
     db.get("SELECT count(*) as count FROM users", (err, row) => {
         if (row && row.count === 0) {
+            // Keep default admin just in case, or we can skip it since we added the one above
             const hash = bcrypt.hashSync('admin123', 8);
-            db.run("INSERT INTO users (username, password) VALUES (?, ?)", ['admin', hash]);
-            console.log("Seeded admin user");
+            db.run("INSERT OR OPTIONAL INTO users (username, password) VALUES (?, ?)", ['admin', hash], (err) => {
+                // Ignore error if admin already exists or conflict
+            });
         }
     });
 
