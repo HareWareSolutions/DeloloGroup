@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { ArrowLeft, Linkedin, FileText, GraduationCap, User } from 'lucide-react';
+import { API_BASE_URL } from '../api';
 import styles from './MemberProfile.module.css';
 
 interface Member {
@@ -29,7 +30,7 @@ const MemberProfile: React.FC = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        fetch(`http://localhost:3001/api/members/${id}`)
+        fetch(`${API_BASE_URL}/api/members/${id}`)
             .then(res => {
                 if (!res.ok) throw new Error('Member not found');
                 return res.json();
@@ -57,7 +58,7 @@ const MemberProfile: React.FC = () => {
             <div className={styles.profileCard}>
                 <div className={styles.imageContainer}>
                     <img
-                        src={member.image_url ? `http://localhost:3001${member.image_url}` : '/placeholder.png'}
+                        src={member.image_url ? `${API_BASE_URL}${member.image_url}` : '/placeholder.png'}
                         alt={member.name}
                         className={styles.image}
                     />

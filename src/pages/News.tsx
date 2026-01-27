@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_BASE_URL } from '../api';
 import styles from './News.module.css';
 
 interface NewsItem {
@@ -28,7 +29,7 @@ const News: React.FC = () => {
     const itemsPerPage = 6;
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/news')
+        fetch(`${API_BASE_URL}/api/news`)
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
@@ -123,7 +124,7 @@ const News: React.FC = () => {
                         <article key={item.id} className={styles.card}>
                             <Link to={`/news/${item.id}`} className={styles.imageContainer}>
                                 <img
-                                    src={item.image_url ? `http://localhost:3001${item.image_url}` : '/placeholder.png'}
+                                    src={item.image_url ? `${API_BASE_URL}${item.image_url}` : '/placeholder.png'}
                                     alt={getTitle(item)}
                                     className={styles.image}
                                     onError={(e) => { e.currentTarget.src = '/placeholder.png'; }}

@@ -3,6 +3,7 @@ import { Plus, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import styles from './ManageMembers.module.css'; // Reusing styles for now
 import DataTable from '../../components/admin/DataTable';
 import MediaLibrary from '../../components/admin/MediaLibrary';
+import { API_BASE_URL } from '../../api';
 
 interface Publication {
     id?: number;
@@ -31,7 +32,7 @@ const ManagePublications: React.FC = () => {
 
     const fetchMembers = async () => {
         try {
-            const res = await fetch('http://localhost:3001/api/members');
+            const res = await fetch(`${API_BASE_URL}/api/members`);
             const data = await res.json();
             if (Array.isArray(data)) setMembers(data);
         } catch (err) {
@@ -52,7 +53,7 @@ const ManagePublications: React.FC = () => {
 
     const fetchPublications = async () => {
         try {
-            const res = await fetch('http://localhost:3001/api/publications');
+            const res = await fetch(`${API_BASE_URL}/api/publications`);
             const data = await res.json();
             if (Array.isArray(data)) {
                 setPublications(data);
@@ -65,7 +66,7 @@ const ManagePublications: React.FC = () => {
     const handleDelete = async (pub: Publication) => {
         if (!pub.id || !confirm(`Delete publication "${pub.title_en}"?`)) return;
         const token = localStorage.getItem('authToken');
-        await fetch(`http://localhost:3001/api/publications/${pub.id}`, {
+        await fetch(`${API_BASE_URL}/api/publications/${pub.id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -79,8 +80,8 @@ const ManagePublications: React.FC = () => {
         const token = localStorage.getItem('authToken');
         const method = editingPub.id ? 'PUT' : 'POST';
         const url = editingPub.id
-            ? `http://localhost:3001/api/publications/${editingPub.id}`
-            : 'http://localhost:3001/api/publications';
+            ? `${API_BASE_URL}/api/publications/${editingPub.id}`
+            : `${API_BASE_URL}/api/publications`;
 
         const res = await fetch(url, {
             method: method,
@@ -123,7 +124,7 @@ const ManagePublications: React.FC = () => {
             key: 'image_url',
             label: 'Image',
             render: (p: Publication) => p.image_url ?
-                <img src={`http://localhost:3001${p.image_url}`} alt="cover" style={{ height: 30 }} /> : null
+                <img src={`${API_BASE_URL}${p.image_url}`} alt="cover" style={{ height: 30 }} /> : null
         },
         { key: 'title_en', label: 'Title (EN)' },
         { key: 'journal', label: 'Journal' },

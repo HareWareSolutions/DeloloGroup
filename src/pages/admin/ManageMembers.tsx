@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import styles from './ManageMembers.module.css';
 import MediaLibrary from '../../components/admin/MediaLibrary';
+import { API_BASE_URL } from '../../api';
 import DataTable from '../../components/admin/DataTable';
 
 interface Member {
@@ -33,7 +34,7 @@ const ManageMembers: React.FC = () => {
 
     const fetchMembers = async () => {
         try {
-            const res = await fetch('http://localhost:3001/api/members');
+            const res = await fetch(`${API_BASE_URL}/api/members`);
             const data = await res.json();
             if (Array.isArray(data)) {
                 setMembers(data);
@@ -49,7 +50,7 @@ const ManageMembers: React.FC = () => {
     const handleDelete = async (member: Member) => {
         if (!member.id || !confirm(`Are you sure you want to delete ${member.name}?`)) return;
         const token = localStorage.getItem('authToken');
-        await fetch(`http://localhost:3001/api/members/${member.id}`, {
+        await fetch(`${API_BASE_URL}/api/members/${member.id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -65,8 +66,8 @@ const ManageMembers: React.FC = () => {
 
         const method = editingMember.id ? 'PUT' : 'POST';
         const url = editingMember.id
-            ? `http://localhost:3001/api/members/${editingMember.id}`
-            : 'http://localhost:3001/api/members';
+            ? `${API_BASE_URL}/api/members/${editingMember.id}`
+            : `${API_BASE_URL}/api/members`;
 
         const res = await fetch(url, {
             method: method,
@@ -113,7 +114,7 @@ const ManageMembers: React.FC = () => {
             label: 'Photo',
             render: (m: Member) => (
                 <img
-                    src={m.image_url ? `http://localhost:3001${m.image_url}` : '/placeholder.png'}
+                    src={m.image_url ? `${API_BASE_URL}${m.image_url}` : '/placeholder.png'}
                     alt=""
                     style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover' }}
                 />

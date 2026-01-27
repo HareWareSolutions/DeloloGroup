@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Upload, Image as ImageIcon, Trash2 } from 'lucide-react';
+import { API_BASE_URL } from '../../api';
 import styles from './MediaLibrary.module.css';
 
 interface MediaLibraryProps {
@@ -26,7 +27,7 @@ const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, isModal 
         setLoading(true);
         try {
             const token = localStorage.getItem('authToken');
-            const res = await fetch('http://localhost:3001/api/media', {
+            const res = await fetch(`${API_BASE_URL}/api/media`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
@@ -49,7 +50,7 @@ const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, isModal 
 
         try {
             const token = localStorage.getItem('authToken');
-            const res = await fetch('http://localhost:3001/api/upload', {
+            const res = await fetch(`${API_BASE_URL}/api/upload`, {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` },
                 body: formData
@@ -82,7 +83,7 @@ const MediaLibrary: React.FC<MediaLibraryProps> = ({ onSelect, onClose, isModal 
                 <div className={styles.grid}>
                     {images.map((img) => (
                         <div key={img.name} className={styles.imageCard} onClick={() => onSelect && onSelect(img.url)}>
-                            <img src={`http://localhost:3001${img.url}`} alt={img.name} />
+                            <img src={`${API_BASE_URL}${img.url}`} alt={img.name} />
                             <div className={styles.imageOverlay}>
                                 <span>Select</span>
                             </div>

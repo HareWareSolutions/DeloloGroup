@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { API_BASE_URL } from '../../api';
 import styles from './Admin.module.css';
 
 const Login: React.FC = () => {
@@ -18,7 +19,7 @@ const Login: React.FC = () => {
 
         try {
             // In production use env vars for API URL
-            const response = await fetch('http://localhost:3001/api/login', {
+            const response = await fetch(`${API_BASE_URL}/api/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

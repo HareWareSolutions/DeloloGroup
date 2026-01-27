@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { Linkedin, FileText, GraduationCap, User } from 'lucide-react';
+import { API_BASE_URL } from '../api';
 import styles from './Members.module.css';
 
 interface Member {
@@ -29,7 +30,7 @@ const Members: React.FC = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/members')
+        fetch(`${API_BASE_URL}/api/members`)
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
@@ -70,7 +71,7 @@ const Members: React.FC = () => {
                 <div key={member.id} className={styles.card}>
                     <Link to={`/members/${member.id}`} className={styles.imageContainer}>
                         <img
-                            src={member.image_url ? `http://localhost:3001${member.image_url}` : '/placeholder.png'}
+                            src={member.image_url ? `${API_BASE_URL}${member.image_url}` : '/placeholder.png'}
                             alt={member.name}
                             className={styles.image}
                         />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import styles from './Fabio.module.css';
+import { API_BASE_URL } from '../api';
 import { GraduationCap, Award, Briefcase, Globe, Star, Zap, FileText, Fingerprint, Linkedin } from 'lucide-react';
 
 const Fabio: React.FC = () => {
@@ -118,7 +119,7 @@ const Fabio: React.FC = () => {
             {/* Hero */}
             <div className={styles.hero}>
                 <img
-                    src="http://localhost:3001/uploads/fabio.jpg"
+                    src={`${API_BASE_URL}/uploads/fabio.jpg`}
                     onError={(e) => { e.currentTarget.src = "/placeholder-user.jpg"; }}
                     alt="Dr. Fábio G. Delolo"
                     className={styles.profileImage}

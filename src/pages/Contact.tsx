@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { Mail, MapPin } from 'lucide-react';
+import { API_BASE_URL } from '../api';
 import styles from './Contact.module.css';
 
 const Contact: React.FC = () => {
@@ -26,7 +27,7 @@ const Contact: React.FC = () => {
         setStatus('submitting');
 
         try {
-            const res = await fetch('http://localhost:3001/api/candidates', {
+            const res = await fetch(`${API_BASE_URL}/api/candidates`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)

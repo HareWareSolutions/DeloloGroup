@@ -3,6 +3,7 @@ import DataTable from '../../components/admin/DataTable';
 import { Search, Filter, RefreshCw } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../api';
 
 interface Candidate {
     id: number;
@@ -32,7 +33,7 @@ const ManageCandidates: React.FC = () => {
 
         const authToken = token || localStorage.getItem('authToken');
 
-        fetch('http://localhost:3001/api/candidates', {
+        fetch(`${API_BASE_URL}/api/candidates`, {
             headers: { 'Authorization': `Bearer ${authToken}` }
         })
             .then(async res => {
@@ -68,7 +69,7 @@ const ManageCandidates: React.FC = () => {
 
         const authToken = token || localStorage.getItem('authToken');
         try {
-            const res = await fetch(`http://localhost:3001/api/candidates/${candidate.id}`, {
+            const res = await fetch(`${API_BASE_URL}/api/candidates/${candidate.id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });

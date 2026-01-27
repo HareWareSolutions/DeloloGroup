@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Admin.module.css';
+import { API_BASE_URL } from '../../api';
 
 const Dashboard: React.FC = () => {
     const [counts, setCounts] = React.useState({ members: 0, publications: 0, news: 0 });
@@ -8,9 +9,9 @@ const Dashboard: React.FC = () => {
         const fetchStats = async () => {
             try {
                 const [membersRes, pubsRes, newsRes] = await Promise.all([
-                    fetch('http://localhost:3001/api/members'),
-                    fetch('http://localhost:3001/api/publications'),
-                    fetch('http://localhost:3001/api/news')
+                    fetch(`${API_BASE_URL}/api/members`),
+                    fetch(`${API_BASE_URL}/api/publications`),
+                    fetch(`${API_BASE_URL}/api/news`)
                 ]);
 
                 const members = await membersRes.json();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { API_BASE_URL } from '../api';
 import styles from './Publications.module.css';
 
 interface Publication {
@@ -32,7 +33,7 @@ const Publications: React.FC = () => {
     const itemsPerPage = 5; // Low number to show pagination effect
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/publications')
+        fetch(`${API_BASE_URL}/api/publications`)
             .then(res => res.json())
             .then(data => {
                 const sorted = data.sort((a: Publication, b: Publication) => b.year - a.year);
@@ -148,7 +149,7 @@ const Publications: React.FC = () => {
                                 .map(pub => (
                                     <div key={pub.id} className={styles.coverCard}>
                                         <img
-                                            src={pub.image_url ? `http://localhost:3001${pub.image_url}` : '/placeholder.png'}
+                                            src={pub.image_url ? `${API_BASE_URL}${pub.image_url}` : '/placeholder.png'}
                                             alt={getTitle(pub)}
                                             className={styles.coverImage}
                                         />
@@ -200,7 +201,7 @@ const Publications: React.FC = () => {
                                             {pub.image_url && (
                                                 <div className={styles.refImageCol}>
                                                     <img
-                                                        src={`http://localhost:3001${pub.image_url}`}
+                                                        src={`${API_BASE_URL}${pub.image_url}`}
                                                         alt={getTitle(pub)}
                                                         className={styles.refCardImage}
                                                     />
@@ -240,7 +241,7 @@ const Publications: React.FC = () => {
                                             {pub.image_url && (
                                                 <div className={styles.refImageCol}>
                                                     <img
-                                                        src={`http://localhost:3001${pub.image_url}`}
+                                                        src={`${API_BASE_URL}${pub.image_url}`}
                                                         alt={getTitle(pub)}
                                                         className={styles.refCardImage}
                                                     />
@@ -286,7 +287,7 @@ const Publications: React.FC = () => {
                                             {pub.image_url && (
                                                 <div className={styles.refImageCol}>
                                                     <img
-                                                        src={`http://localhost:3001${pub.image_url}`}
+                                                        src={`${API_BASE_URL}${pub.image_url}`}
                                                         alt={getTitle(pub)}
                                                         className={styles.refCardImage}
                                                     />
@@ -325,7 +326,7 @@ const Publications: React.FC = () => {
                                             {pub.image_url && (
                                                 <div className={styles.refImageCol}>
                                                     <img
-                                                        src={`http://localhost:3001${pub.image_url}`}
+                                                        src={`${API_BASE_URL}${pub.image_url}`}
                                                         alt={getTitle(pub)}
                                                         className={styles.refCardImage}
                                                     />

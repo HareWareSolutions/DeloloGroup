@@ -3,6 +3,7 @@ import { Plus, Image as ImageIcon, RefreshCw } from 'lucide-react';
 import styles from './ManageMembers.module.css'; // Reusing styles
 import DataTable from '../../components/admin/DataTable';
 import MediaLibrary from '../../components/admin/MediaLibrary';
+import { API_BASE_URL } from '../../api';
 
 interface NewsItem {
     id?: number;
@@ -28,7 +29,7 @@ const ManageNews: React.FC = () => {
 
     const fetchNews = async () => {
         try {
-            const res = await fetch('http://localhost:3001/api/news');
+            const res = await fetch(`${API_BASE_URL}/api/news`);
             const data = await res.json();
             setNews(data);
         } catch (err) {
@@ -39,7 +40,7 @@ const ManageNews: React.FC = () => {
     const handleDelete = async (item: NewsItem) => {
         if (!item.id || !confirm(`Delete news item "${item.title_en}"?`)) return;
         const token = localStorage.getItem('authToken');
-        await fetch(`http://localhost:3001/api/news/${item.id}`, {
+        await fetch(`${API_BASE_URL}/api/news/${item.id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -53,8 +54,8 @@ const ManageNews: React.FC = () => {
         const token = localStorage.getItem('authToken');
         const method = editingNews.id ? 'PUT' : 'POST';
         const url = editingNews.id
-            ? `http://localhost:3001/api/news/${editingNews.id}`
-            : 'http://localhost:3001/api/news';
+            ? `${API_BASE_URL}/api/news/${editingNews.id}`
+            : `${API_BASE_URL}/api/news`;
 
         const res = await fetch(url, {
             method: method,

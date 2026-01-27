@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { ArrowLeft } from 'lucide-react';
+import { API_BASE_URL } from '../api';
 import styles from './NewsDetail.module.css';
 
 interface NewsItem {
@@ -24,7 +25,7 @@ const NewsDetail: React.FC = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        fetch(`http://localhost:3001/api/news/${id}`)
+        fetch(`${API_BASE_URL}/api/news/${id}`)
             .then(res => {
                 if (!res.ok) throw new Error('News not found');
                 return res.json();
@@ -55,7 +56,7 @@ const NewsDetail: React.FC = () => {
             <article className={styles.article}>
                 {news.image_url && (
                     <img
-                        src={`http://localhost:3001${news.image_url}`}
+                        src={`${API_BASE_URL}${news.image_url}`}
                         alt={title}
                         className={styles.image}
                     />

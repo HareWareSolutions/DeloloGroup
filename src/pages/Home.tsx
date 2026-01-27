@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { API_BASE_URL } from '../api';
 import styles from './Home.module.css';
 
 interface NewsItem {
@@ -53,7 +54,7 @@ const Home: React.FC = () => {
 
     useEffect(() => {
         // Fetch News
-        fetch('http://localhost:3001/api/news')
+        fetch(`${API_BASE_URL}/api/news`)
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
@@ -64,7 +65,7 @@ const Home: React.FC = () => {
             .catch(err => console.error(err));
 
         // Fetch Publications
-        fetch('http://localhost:3001/api/publications')
+        fetch(`${API_BASE_URL}/api/publications`)
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
@@ -75,7 +76,7 @@ const Home: React.FC = () => {
             .catch(err => console.error(err));
 
         // Fetch Members (PI + Current)
-        fetch('http://localhost:3001/api/members')
+        fetch(`${API_BASE_URL}/api/members`)
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
@@ -198,7 +199,7 @@ const Home: React.FC = () => {
                                                 <div className={styles.piHighlight}>
                                                     <div className={styles.memberContent}>
                                                         <img
-                                                            src={member.image_url ? `http://localhost:3001${member.image_url}` : '/placeholder-user.jpg'}
+                                                            src={member.image_url ? `${API_BASE_URL}${member.image_url}` : '/placeholder-user.jpg'}
                                                             alt={member.name}
                                                             className={styles.piImage}
                                                         />
