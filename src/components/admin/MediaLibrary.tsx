@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Upload, Image as ImageIcon, Trash2 } from 'lucide-react';
+import { X, Upload } from 'lucide-react';
 import { API_BASE_URL } from '../../api';
 import styles from './MediaLibrary.module.css';
 

@@ -3,7 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import styles from './Values.module.css';
 
 const Values: React.FC = () => {
-    const { t, language } = useLanguage();
+    const { language } = useLanguage();
 
     return (
         <div className={styles.valuesPage}>
