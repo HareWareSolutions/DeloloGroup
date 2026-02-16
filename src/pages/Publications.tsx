@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_BASE_URL } from '../api';
 import styles from './Publications.module.css';
 
@@ -16,6 +15,8 @@ interface Publication {
     volume?: string;
     pages?: string;
     pub_type?: string;
+    deposit_date?: string;
+    grant_date?: string;
 }
 
 const Publications: React.FC = () => {
@@ -27,10 +28,6 @@ const Publications: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [yearFilter, setYearFilter] = useState<string>('all');
     const [typeFilter, setTypeFilter] = useState<string>('all');
-
-    // Pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5; // Low number to show pagination effect
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/api/publications`)
@@ -49,6 +46,19 @@ const Publications: React.FC = () => {
     const getTitle = (pub: Publication) => {
         if (language === 'pt' && pub.title_pt) return pub.title_pt;
         return pub.title_en; // Fallback to EN or default
+    };
+
+    const formatDate = (dateStr?: string) => {
+        if (!dateStr) return null;
+        const date = new Date(dateStr);
+        // Fix timezone offset issue by treating the input as UTC if it comes as YYYY-MM-DD
+        // or just by using getUTC* methods if we want to be safe, but typically:
+        const [y, m, d] = dateStr.split('-');
+
+        if (language === 'pt') {
+            return `${d}/${m}/${y}`;
+        }
+        return `${m}/${d}/${y}`;
     };
 
     // 1. Filter
@@ -73,8 +83,8 @@ const Publications: React.FC = () => {
         });
     }, [publications, searchTerm, yearFilter, typeFilter, language]);
 
-    // 2. Paginate (Optional: currently showing all relevant filtered items split by category)
-    const totalPages = Math.ceil(filteredPublications.length / itemsPerPage);
+    // 2. Paginate - Removed
+    // const totalPages = Math.ceil(filteredPublications.length / itemsPerPage);
     /*
     const paginatedItems = useMemo(() => {
         const start = (currentPage - 1) * itemsPerPage;
@@ -89,10 +99,10 @@ const Publications: React.FC = () => {
     // const years = Object.keys(grouped).map(Number).sort((a, b) => b - a);
     const availableYears = Array.from(new Set(publications.map(p => p.year))).sort((a, b) => b - a);
 
-    // Reset page on filter change
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [searchTerm, yearFilter, typeFilter]);
+    // Reset page on filter change - Removed
+    // useEffect(() => {
+    //     setCurrentPage(1);
+    // }, [searchTerm, yearFilter, typeFilter]);
 
     if (loading) return <div className={styles.loader}>Loading publications...</div>;
 
@@ -229,7 +239,7 @@ const Publications: React.FC = () => {
                                                 {arr.length - index}
                                             </div>
                                             <div className={styles.refMetaText}>
-                                                {pub.journal} – <strong>{pub.year}</strong>
+                                                <strong>{pub.journal}</strong>
                                             </div>
                                         </div>
 
@@ -237,17 +247,32 @@ const Publications: React.FC = () => {
                                             <div className={styles.refContentCol}>
                                                 <h3 className={styles.refTitle}>{getTitle(pub)}</h3>
                                                 <div className={styles.refAuthors}>{pub.authors}</div>
+
+                                                {(pub.deposit_date || pub.grant_date) && (
+                                                    <div style={{ fontSize: '0.9rem', color: '#666', marginTop: '0.5rem' }}>
+                                                        {pub.deposit_date && (
+                                                            <span style={{ marginRight: '1rem' }}>
+                                                                <strong>{language === 'pt' ? 'Data de Depósito:' : 'Deposit Date:'}</strong> {formatDate(pub.deposit_date)}
+                                                            </span>
+                                                        )}
+                                                        {pub.grant_date && (
+                                                            <span>
+                                                                <strong>{language === 'pt' ? 'Data de Concessão:' : 'Grant Date:'}</strong> {formatDate(pub.grant_date)}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
-                                            {pub.image_url && (
-                                                <div className={styles.refImageCol}>
-                                                    <img
-                                                        src={`${API_BASE_URL}${pub.image_url}`}
-                                                        alt={getTitle(pub)}
-                                                        className={styles.refCardImage}
-                                                    />
-                                                </div>
-                                            )}
                                         </div>
+                                        {pub.image_url && (
+                                            <div className={styles.refImageCol}>
+                                                <img
+                                                    src={`${API_BASE_URL}${pub.image_url}`}
+                                                    alt={getTitle(pub)}
+                                                    className={styles.refCardImage}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                 ))
                             }
@@ -360,29 +385,8 @@ const Publications: React.FC = () => {
                 )}
             </div>
 
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-                <div className={styles.pagination}>
-                    <button
-                        className={styles.pageBtn}
-                        disabled={currentPage === 1}
-                        onClick={() => setCurrentPage(prev => prev - 1)}
-                    >
-                        <ChevronLeft size={16} />
-                    </button>
-                    <span className={styles.pageInfo}>
-                        {currentPage} / {totalPages}
-                    </span>
-                    <button
-                        className={styles.pageBtn}
-                        disabled={currentPage === totalPages}
-                        onClick={() => setCurrentPage(prev => prev + 1)}
-                    >
-                        <ChevronRight size={16} />
-                    </button>
-                </div>
-            )}
-        </div>
+            {/* Pagination Controls Removed */}
+        </div >
     );
 };
 

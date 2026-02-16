@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { Linkedin, FileText, GraduationCap, User } from 'lucide-react';
+import { Linkedin, FileText, GraduationCap, User, UserPlus } from 'lucide-react';
 import { API_BASE_URL } from '../api';
 import styles from './Members.module.css';
 
@@ -65,7 +65,7 @@ const Members: React.FC = () => {
     const current = sortMembers(members.filter(m => m.type === 'current'));
     const alumni = sortMembers(members.filter(m => m.type === 'alumni'));
 
-    const renderGrid = (list: Member[]) => (
+    const renderGrid = (list: Member[], showJoinCard: boolean = false) => (
         <div className={styles.grid}>
             {list.map(member => (
                 <div key={member.id} className={styles.card}>
@@ -139,6 +139,42 @@ const Members: React.FC = () => {
                     </div>
                 </div>
             ))}
+
+            {showJoinCard && (
+                <div className={styles.card} style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Link to="/contact" className={styles.imageContainer} style={{ background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <UserPlus size={64} color="#9ca3af" />
+                    </Link>
+                    <div className={styles.content} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                        <Link to="/contact" style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <h3 className={styles.name}>{language === 'pt' ? 'Você?' : 'You?'}</h3>
+                        </Link>
+                        <span className={styles.role}>
+                            {language === 'pt' ? 'Junte-se a nós' : 'Join Us'}
+                        </span>
+                        <p className={styles.bio}>
+                            {language === 'pt'
+                                ? 'O próximo membro pode ser você. Entre em contato conosco para saber mais sobre oportunidades.'
+                                : 'The next member could be you. Contact us to learn more about opportunities.'}
+                        </p>
+                        <div style={{ marginTop: 'auto', width: '100%' }}>
+                            <Link to="/contact" style={{
+                                display: 'inline-block',
+                                marginTop: '1rem',
+                                padding: '0.5rem 1rem',
+                                backgroundColor: 'var(--color-primary)',
+                                color: 'white',
+                                borderRadius: '0.375rem',
+                                textDecoration: 'none',
+                                fontSize: '0.9rem',
+                                fontWeight: 500
+                            }}>
+                                {language === 'pt' ? 'Entre em Contato' : 'Contact Us'}
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 
@@ -159,7 +195,7 @@ const Members: React.FC = () => {
             {current.length > 0 && (
                 <section>
                     <h2 className={styles.sectionTitle}>Current Members</h2>
-                    {renderGrid(current)}
+                    {renderGrid(current, true)}
                 </section>
             )}
 

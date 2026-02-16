@@ -17,6 +17,8 @@ interface Publication {
     volume?: string;
     pages?: string;
     pub_type?: string;
+    deposit_date?: string;
+    grant_date?: string;
 }
 
 const ManagePublications: React.FC = () => {
@@ -114,7 +116,9 @@ const ManagePublications: React.FC = () => {
             image_url: '',
             volume: '',
             pages: '',
-            pub_type: 'Article'
+            pub_type: 'Article',
+            deposit_date: '',
+            grant_date: ''
         });
     };
 
@@ -128,7 +132,7 @@ const ManagePublications: React.FC = () => {
         },
         { key: 'title_en', label: 'Title (EN)' },
         { key: 'pub_type', label: 'Type' },
-        { key: 'journal', label: 'Journal' },
+        { key: 'journal', label: 'Journal / Patent Code' },
     ];
 
     return (
@@ -232,7 +236,7 @@ const ManagePublications: React.FC = () => {
 
                         <div className={styles.row}>
                             <div className={styles.formGroup}>
-                                <label>Journal</label>
+                                <label>{editingPub.pub_type === 'Patent' ? 'Patent Code' : 'Journal'}</label>
                                 <input
                                     value={editingPub.journal}
                                     onChange={e => setEditingPub({ ...editingPub, journal: e.target.value })}
@@ -263,6 +267,27 @@ const ManagePublications: React.FC = () => {
                                     <option value="Conference">Conference</option>
                                 </select>
                             </div>
+
+                            {editingPub.pub_type === 'Patent' && (
+                                <>
+                                    <div className={styles.formGroup}>
+                                        <label>Deposit Date</label>
+                                        <input
+                                            type="date"
+                                            value={editingPub.deposit_date || ''}
+                                            onChange={e => setEditingPub({ ...editingPub, deposit_date: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className={styles.formGroup}>
+                                        <label>Grant Date</label>
+                                        <input
+                                            type="date"
+                                            value={editingPub.grant_date || ''}
+                                            onChange={e => setEditingPub({ ...editingPub, grant_date: e.target.value })}
+                                        />
+                                    </div>
+                                </>
+                            )}
                             <div className={styles.formGroup}>
                                 <label>Volume</label>
                                 <input
@@ -295,19 +320,21 @@ const ManagePublications: React.FC = () => {
                             {!isViewOnly && <button type="submit" className={styles.saveBtn}>Save</button>}
                         </div>
                     </form>
-                </div>
+                </div >
             )}
 
-            {showMediaLibrary && (
-                <MediaLibrary
-                    onClose={() => setShowMediaLibrary(false)}
-                    onSelect={(url) => {
-                        if (editingPub) setEditingPub({ ...editingPub, image_url: url });
-                        setShowMediaLibrary(false);
-                    }}
-                />
-            )}
-        </div>
+            {
+                showMediaLibrary && (
+                    <MediaLibrary
+                        onClose={() => setShowMediaLibrary(false)}
+                        onSelect={(url) => {
+                            if (editingPub) setEditingPub({ ...editingPub, image_url: url });
+                            setShowMediaLibrary(false);
+                        }}
+                    />
+                )
+            }
+        </div >
     );
 };
 

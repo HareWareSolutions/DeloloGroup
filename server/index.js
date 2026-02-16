@@ -51,7 +51,14 @@ function initDb() {
     const schema = fs.readFileSync(schemaPath, 'utf8');
     db.exec(schema, (err) => {
         if (err) console.error('Error initializing schema', err);
-        else seedDb();
+        else {
+            // Migrations: Add new columns if they don't exist
+            // SQLite doesn't have IF NOT EXISTS for columns, so we try and ignore errors
+            db.run("ALTER TABLE publications ADD COLUMN deposit_date TEXT", (err) => { });
+            db.run("ALTER TABLE publications ADD COLUMN grant_date TEXT", (err) => { });
+
+            seedDb();
+        }
     });
 }
 
@@ -142,17 +149,17 @@ const authenticateToken = (req, res, next) => {
 // --- AUTH ROUTES ---
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
-    if (!username || !password) return res.status(400).send('Username and password required');
+    if (!username || !password) return res.status(400).json({ message: 'Username and password required' });
 
     db.get("SELECT * FROM users WHERE username = ?", [username], (err, user) => {
-        if (err) return res.status(500).send('Server error');
-        if (!user) return res.status(400).send('User not found');
+        if (err) return res.status(500).json({ message: 'Server error' });
+        if (!user) return res.status(401).json({ message: 'Invalid username or password' });
 
         const passwordIsValid = bcrypt.compareSync(password, user.password);
-        if (!passwordIsValid) return res.status(401).send('Invalid password');
+        if (!passwordIsValid) return res.status(401).json({ message: 'Invalid username or password' });
 
         const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: 86400 });
-        res.status(200).send({ auth: true, token: token, user: { username: user.username } });
+        res.status(200).json({ auth: true, token: token, user: { username: user.username } });
     });
 });
 
@@ -188,9 +195,9 @@ app.get('/api/publications', (req, res) => {
 });
 
 app.post('/api/publications', authenticateToken, (req, res) => {
-    const { title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type } = req.body;
-    db.run(`INSERT INTO publications (title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type) VALUES (?,?,?,?,?,?,?,?,?,?)`,
-        [title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type],
+    const { title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type, deposit_date, grant_date } = req.body;
+    db.run(`INSERT INTO publications (title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type, deposit_date, grant_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+        [title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type, deposit_date, grant_date],
         function (err) {
             if (err) res.status(500).json({ error: err.message });
             else res.json({ id: this.lastID });
@@ -199,9 +206,9 @@ app.post('/api/publications', authenticateToken, (req, res) => {
 });
 
 app.put('/api/publications/:id', authenticateToken, (req, res) => {
-    const { title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type } = req.body;
-    db.run(`UPDATE publications SET title_pt=?, title_en=?, journal=?, year=?, doi=?, authors=?, image_url=?, volume=?, pages=?, pub_type=? WHERE id=?`,
-        [title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type, req.params.id],
+    const { title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type, deposit_date, grant_date } = req.body;
+    db.run(`UPDATE publications SET title_pt=?, title_en=?, journal=?, year=?, doi=?, authors=?, image_url=?, volume=?, pages=?, pub_type=?, deposit_date=?, grant_date=? WHERE id=?`,
+        [title_pt, title_en, journal, year, doi, authors, image_url, volume, pages, pub_type, deposit_date, grant_date, req.params.id],
         function (err) {
             if (err) res.status(500).json({ error: err.message });
             else res.json({ changes: this.changes });

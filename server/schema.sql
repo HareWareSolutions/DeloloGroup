@@ -33,7 +33,9 @@ CREATE TABLE IF NOT EXISTS publications (
   image_url TEXT,
   volume TEXT,
   pages TEXT,
-  pub_type TEXT
+  pub_type TEXT,
+  deposit_date TEXT,
+  grant_date TEXT
 );
 
 CREATE TABLE IF NOT EXISTS news (
