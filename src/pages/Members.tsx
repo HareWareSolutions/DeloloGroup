@@ -192,12 +192,11 @@ const Members: React.FC = () => {
                 </section>
             )}
 
-            {current.length > 0 && (
-                <section>
-                    <h2 className={styles.sectionTitle}>Current Members</h2>
-                    {renderGrid(current, true)}
-                </section>
-            )}
+            {/* Always show Current Members section because of the "Join Us" card */}
+            <section>
+                <h2 className={styles.sectionTitle}>Current Members</h2>
+                {renderGrid(current, true)}
+            </section>
 
             {alumni.length > 0 && (
                 <section>
