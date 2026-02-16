@@ -187,7 +187,7 @@ const Publications: React.FC = () => {
                                             </div>
                                             <div className={styles.refMetaText}>
                                                 <em>{pub.journal}</em>
-                                                {pub.year && <>,{' '}<strong>{pub.year}</strong></>}
+                                                {pub.year && <>, <strong>{pub.year}</strong></>}
                                                 {pub.volume && <>, {pub.volume}</>}
                                                 {pub.pages && <>, {pub.pages}</>}
                                             </div>
@@ -238,7 +238,7 @@ const Publications: React.FC = () => {
                                                 {arr.length - index}
                                             </div>
                                             <div className={styles.refMetaText}>
-                                                <strong>{pub.journal}</strong>
+                                                <strong>{pub.journal} - {pub.year}</strong>
                                             </div>
                                         </div>
 
