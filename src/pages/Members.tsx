@@ -187,14 +187,14 @@ const Members: React.FC = () => {
 
             {pi.length > 0 && (
                 <section>
-                    <h2 className={styles.sectionTitle}>Principal Investigator</h2>
+                    <h2 className={styles.sectionTitle}>{language === 'pt' ? 'Pesquisador Principal' : 'Principal Investigator'}</h2>
                     {renderGrid(pi)}
                 </section>
             )}
 
             {/* Always show Current Members section because of the "Join Us" card */}
             <section>
-                <h2 className={styles.sectionTitle}>Current Members</h2>
+                <h2 className={styles.sectionTitle}>{language === 'pt' ? 'Membros Atuais' : 'Current Members'}</h2>
                 {renderGrid(current, true)}
             </section>
 
