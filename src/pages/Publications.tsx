@@ -50,7 +50,6 @@ const Publications: React.FC = () => {
 
     const formatDate = (dateStr?: string) => {
         if (!dateStr) return null;
-        const date = new Date(dateStr);
         // Fix timezone offset issue by treating the input as UTC if it comes as YYYY-MM-DD
         // or just by using getUTC* methods if we want to be safe, but typically:
         const [y, m, d] = dateStr.split('-');
