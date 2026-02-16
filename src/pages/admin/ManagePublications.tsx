@@ -127,6 +127,7 @@ const ManagePublications: React.FC = () => {
                 <img src={`${API_BASE_URL}${p.image_url}`} alt="cover" style={{ height: 30 }} /> : null
         },
         { key: 'title_en', label: 'Title (EN)' },
+        { key: 'pub_type', label: 'Type' },
         { key: 'journal', label: 'Journal' },
     ];
 

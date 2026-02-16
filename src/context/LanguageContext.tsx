@@ -22,7 +22,17 @@ const translations: Record<string, Record<Language, string>> = {
     'nav.news': { en: 'News', pt: 'Notícias' },
     'nav.contact': { en: 'Contact', pt: 'Contato' },
     'hero.title': { en: 'Advancing Chemistry for a Sustainable Future', pt: 'Avançando a Química para um Futuro Sustentável' },
-    // Add more keys as needed
+
+    // Footer translations
+    'footer.transforming': { en: 'Transforming scientific knowledge into sustainable innovation.', pt: 'Transformando conhecimento científico em inovação sustentável.' },
+    'footer.focus': { en: 'Focus on catalysis and green chemistry.', pt: 'Foco em catálise e química verde.' },
+    'footer.navigation': { en: 'Navigation', pt: 'Navegação' },
+    'footer.contact': { en: 'Contact', pt: 'Contato' },
+    'footer.connect': { en: 'Connect', pt: 'Conecte-se' },
+    'footer.address': { en: 'Chemistry Dept., ICE, UFJF', pt: 'Dept. de Química, ICE, UFJF' },
+    'footer.campus': { en: 'University Campus', pt: 'Campus Universitário' },
+    'footer.rights': { en: 'All rights reserved.', pt: 'Todos os direitos reservados.' },
+    'footer.developed': { en: 'Developed by', pt: 'Desenvolvido por' },
 };
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

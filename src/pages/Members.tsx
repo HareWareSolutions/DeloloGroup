@@ -84,8 +84,8 @@ const Members: React.FC = () => {
                         {(member.supervision_type && member.type !== 'pi') && (
                             <span className={`${styles.supervision} ${member.supervision_type === 'advisor' ? styles.supervisionAdvisor : styles.supervisionCoAdvisor}`}>
                                 {member.supervision_type === 'advisor'
-                                    ? (language === 'pt' ? 'Orientação' : 'Advisor')
-                                    : (language === 'pt' ? 'Coorientação' : 'Co-Advisor')}
+                                    ? (language === 'pt' ? 'Orientado' : 'Advisor')
+                                    : (language === 'pt' ? 'Coorientado' : 'Co-Advisor')}
                             </span>
                         )}
 
