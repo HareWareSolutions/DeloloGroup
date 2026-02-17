@@ -11,7 +11,7 @@ const Values: React.FC = () => {
             <section className={styles.header}>
                 <div className="container">
                     <h1 className={styles.headerTitle}>
-                        {language === 'pt' ? 'Valores Fundamentais e Missão' : 'Core Values and Mission'}
+                        {language === 'pt' ? 'Valores Fundamentais' : 'Core Values'}
                     </h1>
                     <p className={styles.headerSubtitle}>
                         {language === 'pt'
@@ -22,16 +22,16 @@ const Values: React.FC = () => {
             </section>
 
             <div className="container">
-                {/* Intro Block: Inclusivity & Diversity */}
+                {/* Intro Block: People, Inclusivity & Research Environment */}
                 <div className={styles.fullWidthCard} style={{ marginBottom: '4rem' }}>
                     <div className={styles.fullWidthContent}>
                         <h2 className={styles.cardTitle}>
-                            {language === 'pt' ? 'Inclusão & Diversidade' : 'Inclusivity & Diversity'}
+                            {language === 'pt' ? 'Pessoas, Inclusão & Ambiente de Pesquisa' : 'People, Inclusivity & Research Environment'}
                         </h2>
                         <p className={styles.cardText}>
                             {language === 'pt'
-                                ? 'O Grupo de Pesquisa Delolo está comprometido em promover um ambiente de pesquisa inclusivo, respeitoso e colaborativo, onde todos os membros possam prosperar. Valorizamos a diversidade em seu sentido mais amplo—incluindo formação científica, cultura, gênero, etnia, status socioeconômico e experiência de vida—e reconhecemos que diferentes perspectivas são essenciais para a criatividade, pensamento crítico e excelência científica.'
-                                : 'The Delolo Research Group is committed to fostering an inclusive, respectful, and collaborative research environment where all members can thrive. We value diversity in its broadest sense—including scientific background, culture, gender, ethnicity, socioeconomic status, and life experience—and recognize that different perspectives are essential for creativity, critical thinking, and scientific excellence.'}
+                                ? 'O Grupo de Pesquisa Delolo está comprometido com a construção de um ambiente de pesquisa inclusivo, respeitoso, seguro e colaborativo, no qual todos os membros possam se desenvolver plenamente. Valorizamos a diversidade em seu sentido mais amplo — abrangendo formação científica, cultura, gênero, etnia, status socioeconômico e experiências de vida — e reconhecemos que perspectivas diversas são fundamentais para a criatividade, o pensamento crítico e a excelência científica. Promovemos oportunidades iguais e mantemos tolerância zero a qualquer forma de discriminação ou assédio, acreditando que uma atmosfera positiva, ética e acolhedora é essencial para o bem-estar individual e para o sucesso coletivo dentro e fora da academia.'
+                                : 'The Delolo Research Group is committed to building an inclusive, respectful, safe, and collaborative research environment where all members can full develop. We value diversity in its broadest sense—encompassing scientific background, culture, gender, ethnicity, socioeconomic status, and life experiences—and recognize that diverse perspectives are fundamental to creativity, critical thinking, and scientific excellence. We promote equal opportunities and maintain zero tolerance for any form of discrimination or harassment, believing that a positive, ethical, and welcoming atmosphere is essential for individual well-being and collective success both within and outside academia.'}
                         </p>
                     </div>
                     <div className={styles.visualSide}>
@@ -41,42 +41,28 @@ const Values: React.FC = () => {
 
                 {/* Grid for other values */}
                 <div className={styles.grid}>
-                    {/* Card 1: Student Centered */}
+                    {/* Card 2: Student Centered */}
                     <div className={styles.valueCard}>
                         <h3 className={styles.cardTitle}>
-                            {language === 'pt' ? 'Missão Centrada no Estudante' : 'Student-Centered Mission'}
+                            {language === 'pt' ? 'Formação Centrada no Estudante' : 'Student-Centered Training'}
                         </h3>
                         <p className={styles.cardText}>
                             {language === 'pt'
-                                ? 'Os estudantes estão no centro da nossa missão. Acreditamos que pesquisa de alta qualidade é inseparável de um ambiente saudável, solidário e acolhedor. Nosso objetivo é formar cientistas independentes, respeitando a individualidade, os diversos caminhos de aprendizado e as trajetórias pessoais.'
-                                : 'Students are at the center of our mission. We believe that high-quality research is inseparable from a healthy, supportive, and welcoming environment. Our goal is to train independent scientists while respecting individuality, diverse learning paths, and personal trajectories.'}
+                                ? 'Os estudantes estão no centro da missão do grupo. Entendemos que pesquisa de alta qualidade é inseparável de um ambiente saudável e solidário. Nosso objetivo é formar cientistas críticos e independentes, respeitando a individualidade, os diferentes ritmos de aprendizado e as trajetórias pessoais, ao mesmo tempo em que estimulamos autonomia, responsabilidade e integridade científica.'
+                                : 'Students are at the core of the group\'s mission. We understand that high-quality research is inseparable from a healthy and supportive environment. Our goal is to train critical and independent scientists, respecting individuality, different learning paces, and personal trajectories, while encouraging autonomy, responsibility, and scientific integrity.'}
                         </p>
                     </div>
 
-                    {/* Card 2: Respect & Communication */}
+                    {/* Card 3: Respect & Communication */}
                     <div className={styles.valueCard}>
                         <h3 className={styles.cardTitle}>
-                            {language === 'pt' ? 'Respeito & Comunicação' : 'Respect & Communication'}
+                            {language === 'pt' ? 'Respeito, Comunicação & Colaboração' : 'Respect, Communication & Collaboration'}
                         </h3>
                         <p className={styles.cardText}>
                             {language === 'pt'
-                                ? 'O grupo é construído sobre o respeito mútuo, comunicação aberta e responsabilidade compartilhada. Os membros são encorajados a fazer perguntas, desafiar ideias respeitosamente e participar ativamente na formação de suas próprias pesquisas e na direção científica do grupo.'
-                                : 'The group is built on mutual respect, open communication, and shared responsibility. Members are encouraged to ask questions, challenge ideas respectfully, and actively participate in shaping both their own research and the scientific direction of the group.'}
+                                ? 'O grupo é guiado pelo respeito mútuo, comunicação aberta e responsabilidade compartilhada. Incentivamos perguntas, o debate construtivo e o questionamento respeitoso de ideias, promovendo a participação ativa de todos na condução de suas pesquisas e na construção coletiva da direção científica do grupo.'
+                                : 'The group is guided by mutual respect, open communication, and shared responsibility. We encourage questions, constructive debate, and respectful questioning of ideas, promoting active participation from everyone in conducting their research and collectively building the group\'s scientific direction.'}
                         </p>
-                    </div>
-
-                    {/* Card 3: Equal Opportunities - Full Width Bottom specific style or just in grid */}
-                    <div className={`${styles.valueCard} ${styles.fullWidthCard}`} style={{ gridColumn: '1 / -1', background: 'white', borderLeft: 'none', borderTop: '5px solid var(--color-primary)' }}>
-                        <div>
-                            <h3 className={styles.cardTitle}>
-                                {language === 'pt' ? 'Oportunidades Iguais & Atmosfera Positiva' : 'Equal Opportunities & Positive Atmosphere'}
-                            </h3>
-                            <p className={styles.cardText}>
-                                {language === 'pt'
-                                    ? 'Estamos comprometidos em oferecer oportunidades iguais e manter um espaço livre de qualquer tipo de discriminação ou assédio. Espera-se que cada membro do grupo contribua para uma atmosfera positiva e inclusiva, onde o feedback construtivo, a integridade científica e a colaboração guiem as interações diárias e o sucesso a longo prazo, tanto dentro quanto fora da academia.'
-                                    : 'We are committed to providing equal opportunities and to maintaining a space free from discrimination or harassment of any kind. Every group member is expected to contribute to a positive and inclusive atmosphere, where constructive feedback, scientific integrity, and collaboration guide daily interactions and long-term success, both inside and outside academia.'}
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

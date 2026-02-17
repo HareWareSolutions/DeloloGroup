@@ -122,7 +122,7 @@ const Home: React.FC = () => {
                 <div className="container">
                     <div className={styles.researchIntroCard}>
                         <h2 className={styles.researchIntroTitle}>
-                            {language === 'pt' ? 'Um pouco sobre a nossa pesquisa' : 'A bit about our research'}
+                            {language === 'pt' ? 'Missão' : 'Mission'}
                         </h2>
                         <p className={styles.researchIntroText}>
                             {language === 'pt'
