@@ -76,9 +76,21 @@
 /* Timeline / Experience */
 .timeline {
     position: relative;
-    padding-left: 2rem;
+    padding-left: 48px;
+    /* Fixed gutter in pixels for precision */
     margin-bottom: var(--spacing-3xl);
-    border-left: 3px solid #e5e7eb;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 24px;
+    /* Exact center of 48px gutter */
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e5e7eb;
+    transform: translateX(-50%);
 }
 
 .timelineItem {
@@ -90,25 +102,22 @@
 .timelineItem::before {
     content: '';
     position: absolute;
-    /* Center the dot on the line. 
-       Padding left of timeline is 2rem (approx 32px).
-       Item padding is var(--spacing-lg) (approx 1.5rem/24px) but relative to item content.
-       We need to go back to the border.
-       Border is at 0px relative to .timeline.
-       Start of .timelineItem content is at 2rem (padding of parent) + 0 (margin).
-       So left: -2rem brings us to the border.
-       Line is 3px wide. Center is 1.5px.
-       Dot is 1rem (16px) wide. Center is 8px.
-       To align centers: -2rem + 1.5px - 8px = -2rem - 6.5px.
-       Since we don't have exact pixels, let's use calc.
+    /* 
+       Item padding creates the offset.
+       Target Center: -24px relative to content start.
+       (Because content starts at 48px, center is at 24px. 24 - 48 = -24).
     */
-    left: calc(-2rem - 0.5rem + 1.5px);
+    left: -24px;
+    transform: translateX(-50%);
     top: 0.4rem;
-    width: 1rem;
-    height: 1rem;
+    width: 16px;
+    /* Explicit pixels matching design */
+    height: 16px;
     background: var(--color-primary);
     border-radius: 50%;
     border: 3px solid white;
+    box-sizing: border-box;
+    /* Crucial for calc consistency */
     box-shadow: 0 0 0 1px #e5e7eb;
 }
 
@@ -122,6 +131,8 @@
     font-size: 0.9rem;
     margin-bottom: var(--spacing-xs);
 }
+
+/* ... existing styles ... */
 
 .itemTitle {
     font-size: 1.2rem;
@@ -213,18 +224,33 @@
         width: 180px;
         height: 180px;
         border-radius: 50%;
-        /* Make it round on mobile for better look or keep rectangular but smaller */
         margin-bottom: var(--spacing-md);
         object-position: top;
     }
 
     .timeline {
-        padding-left: 1.5rem;
-        margin-left: 0.5rem;
+        padding-left: 32px;
+        /* Smaller gutter on mobile */
+        margin-left: 8px;
+    }
+
+    .timeline::before {
+        left: 16px;
+        /* Center of 32px gutter */
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: #e5e7eb;
+        transform: translateX(-50%);
     }
 
     .timelineItem::before {
-        left: calc(-1.5rem - 0.5rem + 1.5px);
+        /*
+           Item content starts at 32px.
+           Target Center: 16px.
+           Offset: 16px - 32px = -16px.
+        */
+        left: -16px;
     }
 }
 
