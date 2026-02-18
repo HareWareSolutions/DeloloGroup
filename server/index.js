@@ -57,6 +57,12 @@ function initDb() {
             db.run("ALTER TABLE publications ADD COLUMN deposit_date TEXT", (err) => { });
             db.run("ALTER TABLE publications ADD COLUMN grant_date TEXT", (err) => { });
 
+            // Lectures migrations
+            db.run("ALTER TABLE lectures ADD COLUMN title_pt TEXT", (err) => { });
+            db.run("ALTER TABLE lectures ADD COLUMN title_en TEXT", (err) => { });
+            db.run("ALTER TABLE lectures ADD COLUMN country_pt TEXT", (err) => { });
+            db.run("ALTER TABLE lectures ADD COLUMN country_en TEXT", (err) => { });
+
             seedDb();
         }
     });
@@ -137,10 +143,17 @@ function seedDb() {
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
-    if (token == null) return res.sendStatus(401);
+
+    if (token == null) {
+        console.log('No token provided');
+        return res.sendStatus(401);
+    }
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403);
+        if (err) {
+            console.error('Token verification failed:', err.message);
+            return res.sendStatus(403);
+        }
         req.user = user;
         next();
     });
@@ -358,6 +371,46 @@ app.post('/api/candidates', (req, res) => {
 
 app.delete('/api/candidates/:id', authenticateToken, (req, res) => {
     db.run(`DELETE FROM candidatos WHERE id=?`, [req.params.id], function (err) {
+        if (err) res.status(500).json({ error: err.message });
+        else res.json({ changes: this.changes });
+    });
+});
+
+// --- LECTURES ROUTES ---
+app.get('/api/lectures', (req, res) => {
+    db.all("SELECT * FROM lectures ORDER BY year DESC", [], (err, rows) => {
+        if (err) res.status(500).json({ error: err.message });
+        else res.json(rows);
+    });
+});
+
+app.post('/api/lectures', authenticateToken, (req, res) => {
+    // Determine if old or new format is sent. New format uses _pt/_en suffixes.
+    // If user sends 'title', we map it to 'title_pt' as default or handle accordingly.
+    const { year, institution, country_pt, country_en, title_pt, title_en } = req.body;
+
+    db.run(`INSERT INTO lectures (year, institution, country_pt, country_en, title_pt, title_en) VALUES (?, ?, ?, ?, ?, ?)`,
+        [year, institution, country_pt, country_en, title_pt, title_en],
+        function (err) {
+            if (err) res.status(500).json({ error: err.message });
+            else res.json({ id: this.lastID });
+        }
+    );
+});
+
+app.put('/api/lectures/:id', authenticateToken, (req, res) => {
+    const { year, institution, country_pt, country_en, title_pt, title_en } = req.body;
+    db.run(`UPDATE lectures SET year=?, institution=?, country_pt=?, country_en=?, title_pt=?, title_en=? WHERE id=?`,
+        [year, institution, country_pt, country_en, title_pt, title_en, req.params.id],
+        function (err) {
+            if (err) res.status(500).json({ error: err.message });
+            else res.json({ changes: this.changes });
+        }
+    );
+});
+
+app.delete('/api/lectures/:id', authenticateToken, (req, res) => {
+    db.run(`DELETE FROM lectures WHERE id=?`, [req.params.id], function (err) {
         if (err) res.status(500).json({ error: err.message });
         else res.json({ changes: this.changes });
     });

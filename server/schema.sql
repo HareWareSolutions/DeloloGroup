@@ -65,3 +65,14 @@ CREATE TABLE IF NOT EXISTS candidatos (
   date TEXT,
   cv_url TEXT
 );
+
+CREATE TABLE IF NOT EXISTS lectures (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  year TEXT,
+  institution TEXT,
+  country_pt TEXT,
+  country_en TEXT,
+  title_pt TEXT,
+  title_en TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

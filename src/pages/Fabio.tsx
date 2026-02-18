@@ -2,7 +2,18 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import styles from './Fabio.module.css';
 import { API_BASE_URL } from '../api';
-import { GraduationCap, Award, Briefcase, Globe, Star, Zap, FileText, Fingerprint, Linkedin } from 'lucide-react';
+import { GraduationCap, Award, Briefcase, Globe, FileText, Fingerprint, Linkedin } from 'lucide-react';
+
+interface Lecture {
+    year: string;
+    institution: string;
+    country: string;
+    country_pt?: string;
+    country_en?: string;
+    title: string;
+    title_pt?: string;
+    title_en?: string;
+}
 
 const Fabio: React.FC = () => {
     const { language } = useLanguage();
@@ -21,7 +32,7 @@ const Fabio: React.FC = () => {
             year: '2020',
             degree_pt: 'MBA em Gestão de Negócios',
             degree_en: 'MBA in Business Management',
-            institution: 'USP-ESALQ',
+            institution: 'Universidade de São Paulo (USP-ESALQ)',
             details_pt: '',
             details_en: ''
         },
@@ -30,8 +41,8 @@ const Fabio: React.FC = () => {
             degree_pt: 'Mestre em Química Inorgânica',
             degree_en: 'M.Sc. in Inorganic Chemistry',
             institution: 'Universidade Federal de Minas Gerais (UFMG)',
-            details_pt: '',
-            details_en: ''
+            details_pt: 'Orientação: Profa. Dra. Elena Vitalievna Goussevskaia. Coorientação: Prof. Dr. Eduardo Nicolau dos Santos.',
+            details_en: 'Advisor: Prof. Dr. Elena Vitalievna Goussevskaia. Co-advisor: Prof. Dr. Eduardo Nicolau dos Santos.'
         },
         {
             year: '2016',
@@ -45,20 +56,20 @@ const Fabio: React.FC = () => {
 
     const experience = [
         {
-            period: '2025 - Present',
-            role_pt: 'Pesquisador de Pós-Doutorado (CAPES-PIPD)',
-            role_en: 'Postdoctoral Researcher (CAPES-PIPD)',
+            period: '2022 - 2026',
+            role_pt: 'Pesquisador de Pós-Doutorado',
+            role_en: 'Postdoctoral Researcher',
             place: 'Universidade Federal de Minas Gerais (UFMG)'
         },
         {
             period: '2024 - 2025',
             role_pt: 'Professor Substituto',
-            role_en: 'Substitute Professor',
-            place: 'Departamento de Química - UFMG'
+            role_en: 'Lecturer',
+            place: 'Universidade Federal de Minas Gerais (UFMG)'
         },
         {
-            period: '2022 - 2024', // Inferred from Committee dates or PhD overlap? Text says "Nesse período (doutorado)... bolsista PrInt". So PrInt was during PhD.
-            role_pt: 'Pesquisador Visitante (Doutorado Sanduíche / CAPES-PrInt)',
+            period: '2020 - 2021',
+            role_pt: 'Doutorado Sanduíche (CAPES-PrInt)',
             role_en: 'Visiting Researcher (Sandwich PhD)',
             place: 'Leibniz Institute for Catalysis (LIKAT), Rostock, Germany',
             details_pt: 'Supervisão: Prof. Dr. Matthias Beller.',
@@ -68,15 +79,15 @@ const Fabio: React.FC = () => {
             period: '2014 - 2015',
             role_pt: 'Bolsista Ciências sem Fronteiras (CsF)',
             role_en: 'Science Without Borders Fellow',
-            place: 'University of Glasgow, UK',
+            place: 'University of Glasgow, Glasgow, United Kingdom',
             details_pt: 'Supervisão: Prof. Dr. Andrew Sutherland.',
             details_en: 'Supervisor: Prof. Dr. Andrew Sutherland.'
         },
         {
             period: '2011 - 2014',
             role_pt: 'Iniciação Científica',
-            role_en: 'Undergraduate Researcher',
-            place: 'UFSCar - Laboratório de Estrutura e Reatividade',
+            role_en: 'Undergraduate Research',
+            place: 'Universidade Federal de São Carlos (UFSCar)',
             details_pt: 'Supervisão: Prof. Dr. Alzir Azevedo Batista.',
             details_en: 'Supervisor: Prof. Dr. Alzir Azevedo Batista.'
         }
@@ -91,28 +102,23 @@ const Fabio: React.FC = () => {
         { title_pt: 'Prêmio Jovem Pesquisador', title_en: 'Young Researcher Award', org: 'RSC / JP-SBQ', year: '2021' }
     ];
 
-    const recognitions = [
-        {
-            title_pt: 'Representante Brasileiro no 74th Lindau Nobel Laureate Meeting',
-            title_en: 'Brazilian Representative at 74th Lindau Nobel Laureate Meeting',
-            org: 'Academia Brasileira de Ciências (ABC)',
-            icon: Globe
-        },
-        {
-            title_pt: 'Programa CATALISA ICT',
-            title_en: 'CATALISA ICT Program Selection',
-            org: 'SEBRAE',
-            desc_pt: 'Tecnologia selecionada para inovação no mercado.',
-            desc_en: 'Technology selected for market innovation.',
-            icon: Zap
-        },
-        {
-            title_pt: 'Comitê de Jovens Pesquisadores (Network)',
-            title_en: 'Young Researchers Committee (Network)',
-            org: 'Sociedade Brasileira de Química (SBQ) 2022-2024',
-            icon: Star
-        }
-    ];
+    const [lectures, setLectures] = React.useState<Lecture[]>([]);
+
+    React.useEffect(() => {
+        fetch(`${API_BASE_URL}/api/lectures`)
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setLectures(data);
+                }
+            })
+            .catch(err => console.error('Error fetching lectures:', err));
+    }, []);
+
+    // const lectures: Lecture[] = [
+    //     // Example structure, easy to add more items
+    //     // { year: '2024', institution: 'Event Name', country: 'Country', title: 'Lecture Title' }
+    // ];
 
     return (
         <div className="container section">
@@ -127,12 +133,12 @@ const Fabio: React.FC = () => {
                 <div className={styles.heroContent}>
                     <h1 className={styles.name}>Fábio G. Delolo</h1>
                     <p className={styles.role}>
-                        {language === 'pt' ? 'Professor Assistente | UFJF' : 'Assistant Professor | UFJF'}
+                        {language === 'pt' ? 'Pesquisador de Pós-Doutorado | UFMG' : 'Postdoctoral Researcher | UFMG'}
                     </p>
                     <p className={styles.intro}>
                         {language === 'pt'
-                            ? 'Dedica-se a explorar aspectos sustentáveis para a valorização da matéria prima biorrenovável utilizando catalisadores homogêneos, heterogêneos e eletroquímica.'
-                            : 'Dedicated to exploring sustainable aspects for the valorization of bio-renewable raw materials using homogeneous and heterogeneous catalysts and electrochemistry.'}
+                            ? 'Dedica-se ao desenvolvimento de estratégias catalíticas sustentáveis, visando transformar conhecimento fundamental em soluções aplicáveis da bancada ao mercado.'
+                            : 'Dedicated to the development of sustainable catalytic strategies, aiming to transform fundamental knowledge into applicable solutions from the bench to the market.'}
                     </p>
 
                     {/* Social/Academic Links */}
@@ -162,25 +168,31 @@ const Fabio: React.FC = () => {
                     {language === 'pt' ? (
                         <>
                             <p>
-                                Fábio Godoy Delolo obteve seu Bacharelado em Química (2016) pela Universidade Federal de São Carlos (UFSCar), seguido por Mestrado (2018) e Doutorado (2022) em Química pela Universidade Federal de Minas Gerais (UFMG). Ele também possui MBA em Gestão de Negócios pela USP–ESALQ (2020).
+                                Fábio Godoy Delolo obteve seu Bacharelado em Química (2016) pela Universidade Federal de São Carlos (UFSCar), seguido de Mestrado (2018) e Doutorado (2022) em Química pela Universidade Federal de Minas Gerais (UFMG). Possui também MBA em Gestão de Negócios pela USP–ESALQ (2020).
                             </p>
                             <p>
-                                Como bolsista do programa Ciência sem Fronteiras da CAPES, realizou pesquisa na University of Glasgow (Reino Unido) entre 2014 e 2015 sob supervisão do Prof. Andrew Sutherland. Durante seu doutorado, foi contemplado com bolsa CAPES-PrInt e desenvolveu parte de sua pesquisa no Leibniz Institute for Catalysis (LIKAT), Alemanha, trabalhando com o Prof. Matthias Beller.
+                                Como bolsista do programa Ciência sem Fronteiras (CAPES), realizou pesquisa na University of Glasgow (Reino Unido) entre 2014 e 2015, sob supervisão do Prof. Andrew Sutherland. Durante o doutorado, foi contemplado com bolsa CAPES-PrInt e desenvolveu parte de sua pesquisa no Leibniz Institute for Catalysis (LIKAT), na Alemanha, em colaboração com o Prof. Matthias Beller.
                             </p>
                             <p>
                                 Recebeu diversas distinções, incluindo o Prêmio Victor Teixeira da Silva (SBCat, 2021), o Prêmio Jovem Pesquisador (RSC/JP-SBQ, 2021), o Prêmio de Teses da UFMG e o Grande Prêmio de Teses (2023), além do Prêmio CAPES de Tese (2023). Foi selecionado como CAS Future Leader (2025) e pela Academia Brasileira de Ciências para representar o Brasil no 74º Lindau Nobel Laureate Meeting. Uma de suas tecnologias foi selecionada para o programa CATALISA ICT/SEBRAE.
+                            </p>
+                            <p>
+                                Além de sua atuação científica, é pai de João (in memoriam) e de Otto, experiências que marcam profundamente sua trajetória pessoal e dão sentido humano ao seu percurso profissional.
                             </p>
                         </>
                     ) : (
                         <>
                             <p>
-                                Fábio Godoy Delolo received his B.Sc. in Chemistry (2016) from the Federal University of São Carlos (UFSCar), followed by an M.Sc. (2018) and a Ph.D. (2022) in Chemistry from the Federal University of Minas Gerais (UFMG). He also holds an MBA in Business Management from USP–ESALQ (2020).
+                                Fábio Godoy Delolo received his B.Sc. in Chemistry (2016) from the Federal University of São Carlos (UFSCar), followed by M.Sc. (2018) and Ph.D. (2022) degrees in Chemistry from the Federal University of Minas Gerais (UFMG). He also holds an MBA in Business Management from USP–ESALQ (2020).
                             </p>
                             <p>
-                                As a CAPES Science without Borders fellow, he conducted research at the University of Glasgow (UK) from 2014 to 2015 under the supervision of Prof. Andrew Sutherland. During his Ph.D., he was awarded a CAPES-PrInt fellowship and carried out part of his doctoral research at the Leibniz Institute for Catalysis (LIKAT), Germany, working with Prof. Matthias Beller.
+                                As a Science Without Borders fellow (CAPES), he conducted research at the University of Glasgow (UK) between 2014 and 2015, under the supervision of Prof. Andrew Sutherland. During his Ph.D., he was awarded a CAPES-PrInt fellowship and developed part of his research at the Leibniz Institute for Catalysis (LIKAT), Germany, in collaboration with Prof. Matthias Beller.
                             </p>
                             <p>
-                                He has received several distinctions, including the Victor Teixeira da Silva Prize (SBCat, 2021), the Young Researcher Award (RSC/JP-SBQ, 2021), the UFMG Thesis Award and Grand Thesis Prize (2023), and the CAPES Thesis Award (2023). He was selected as a CAS Future Leader (2025) and by the Brazilian Academy of Sciences to represent Brazil at the 74th Lindau Nobel Laureate Meeting. One of his technologies was selected for the CATALISA ICT/SEBRAE program.
+                                He has received several distinctions, including the Victor Teixeira da Silva Award (SBCat, 2021), the Young Researcher Award (RSC/JP-SBQ, 2021), the UFMG Thesis Award and the Grand Thesis Prize (2023), in addition to the CAPES Thesis Award (2023). He was selected as a CAS Future Leader (2025) and by the Brazilian Academy of Sciences to represent Brazil at the 74th Lindau Nobel Laureate Meeting. One of his technologies was selected for the CATALISA ICT/SEBRAE program.
+                            </p>
+                            <p>
+                                Beyond his scientific work, he is the father of João (in memoriam) and Otto, experiences that deeply mark his personal trajectory and give human meaning to his professional path.
                             </p>
                         </>
                     )}
@@ -244,23 +256,34 @@ const Fabio: React.FC = () => {
                         ))}
                     </div>
 
+                    {/* NEW Invited Lectures Section */}
                     <h2 className={styles.sectionTitle} style={{ marginTop: '2rem' }}>
-                        <Star size={24} />
-                        {language === 'pt' ? 'Reconhecimento e Liderança' : 'Recognition & Leadership'}
+                        <Globe size={24} />
+                        {language === 'pt' ? 'Palestras Convidadas' : 'Invited Lectures'}
                     </h2>
                     <div className={styles.grid} style={{ gridTemplateColumns: '1fr' }}>
-                        {recognitions.map((rec, idx) => (
-                            <div key={idx} className={`${styles.card} ${styles.awardCard}`}>
-                                <div className={`${styles.iconBox} ${styles.eduIcon}`}>
-                                    <rec.icon size={20} />
+                        {lectures.length > 0 ? (
+                            lectures.map((lec: any, idx) => (
+                                <div key={idx} className={`${styles.card} ${styles.awardCard}`}>
+                                    <div className={`${styles.iconBox} ${styles.eduIcon}`}>
+                                        <Globe size={20} />
+                                    </div>
+                                    <div>
+                                        <div className={styles.itemSubtitle}>
+                                            {lec.year} | {lec.institution}
+                                            ({language === 'pt' ? (lec.country_pt || lec.country) : (lec.country_en || lec.country)})
+                                        </div>
+                                        <div className={styles.itemTitle}>
+                                            {language === 'pt' ? (lec.title_pt || lec.title) : (lec.title_en || lec.title)}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div className={styles.itemTitle}>{language === 'pt' ? rec.title_pt : rec.title_en}</div>
-                                    <div className={styles.itemSubtitle}>{rec.org}</div>
-                                    <div className={styles.itemDesc}>{language === 'pt' ? rec.desc_pt : rec.desc_en}</div>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p style={{ color: '#6b7280', fontStyle: 'italic' }}>
+                                {language === 'pt' ? 'Em breve.' : 'Coming soon.'}
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

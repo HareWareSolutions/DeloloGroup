@@ -18,6 +18,8 @@ import ManagePublications from './pages/admin/ManagePublications';
 import ManageNews from './pages/admin/ManageNews';
 import ManageCandidates from './pages/admin/ManageCandidates';
 
+import ManageLectures from './pages/admin/ManageLectures';
+
 function App() {
   return (
     <Router>
@@ -42,6 +44,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="members" element={<ManageMembers />} />
           <Route path="publications" element={<ManagePublications />} />
+          <Route path="lectures" element={<ManageLectures />} />
           <Route path="news" element={<ManageNews />} />
           <Route path="candidates" element={<ManageCandidates />} />
         </Route>
