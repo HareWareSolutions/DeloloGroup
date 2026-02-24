@@ -2,7 +2,7 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import styles from './Fabio.module.css';
 import { API_BASE_URL } from '../api';
-import { GraduationCap, Award, Briefcase, Globe, FileText, Fingerprint, Linkedin } from 'lucide-react';
+import { GraduationCap, Award, Briefcase, Globe, FileText, Fingerprint, Linkedin, Mail } from 'lucide-react';
 
 interface Lecture {
     year: string;
@@ -143,6 +143,9 @@ const Fabio: React.FC = () => {
 
                     {/* Social/Academic Links */}
                     <div className={styles.socialButtons}>
+                        <a href="mailto:fabiodelolo@hotmail.com" className={styles.socialBtn}>
+                            <Mail size={18} /> Email
+                        </a>
                         <a href="http://lattes.cnpq.br/9249500644603471" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
                             <FileText size={18} /> Lattes
                         </a>
