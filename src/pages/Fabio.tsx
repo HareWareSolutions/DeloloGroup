@@ -133,7 +133,7 @@ const Fabio: React.FC = () => {
                 <div className={styles.heroContent}>
                     <h1 className={styles.name}>Fábio G. Delolo</h1>
                     <p className={styles.role}>
-                        {language === 'pt' ? 'Pesquisador de Pós-Doutorado | UFMG' : 'Postdoctoral Researcher | UFMG'}
+                        {language === 'pt' ? 'Professor Assistente | UFJF' : 'Assistant Professor | UFJF'}
                     </p>
                     <p className={styles.intro}>
                         {language === 'pt'

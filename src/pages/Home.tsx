@@ -133,12 +133,12 @@ const Home: React.FC = () => {
 
                     <div className="scientific-grid">
                         <div className={`glass-panel ${styles.featureCard}`}>
-                            <h3>{language === 'pt' ? 'Química (Catálise) Prebiótica' : 'Prebiotic Chemistry (Catalysis)'}</h3>
+                            <h3>{language === 'pt' ? 'Química Prebiótica' : 'Prebiotic Chemistry'}</h3>
                             <p>{language === 'pt' ? 'Investigação dos processos químicos e catáliticos que podem ter contribuído para a origem da vida na terra, explorando reações prebióticas e mecanismos de formação de biomoléculas.' : 'Investigation of the chemical and catalytic processes that may have contributed to the origin of life on Earth, exploring prebiotic reactions and mechanisms of biomolecule formation.'}</p>
                         </div>
                         <div className={`glass-panel ${styles.featureCard}`}>
                             <h3>{language === 'pt' ? 'Design de Ligantes' : 'Ligand Design'}</h3>
-                            <p>{language === 'pt' ? 'Desenvolvimento e caracterização de novos ligantes para aplicações em catálise, medicina e ciência de materiais. Utilizando abordagens computacionais e experimentais.' : 'Development and characterization of new ligands for applications in catalysis, medicine, and materials science. Using computational and experimental approaches.'}</p>
+                            <p>{language === 'pt' ? 'Desenvolvimento e caracterização de novos ligantes para aplicações em catálise, medicina e ciência de materiais.' : 'Development and characterization of new ligands for applications in catalysis, medicine, and materials science.'}</p>
                         </div>
                         <div className={`glass-panel ${styles.featureCard}`}>
                             <h3>{language === 'pt' ? 'Valorização de Biorenováveis' : 'Renewable Biomass Valorization'}</h3>
