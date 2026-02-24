@@ -63,7 +63,7 @@ const Contact: React.FC = () => {
                     <div className={styles.contactDetails}>
                         <div className={styles.detailItem}>
                             <Mail size={20} color="var(--color-primary)" />
-                            <span>fabio@delologroup.com </span>
+                            <span>fabiodelolo@hotmail.com</span>
                         </div>
                         <div className={styles.detailItem}>
                             <MapPin size={20} color="var(--color-primary)" />
