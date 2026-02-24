@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { Linkedin, FileText, GraduationCap, User, UserPlus } from 'lucide-react';
+import { Linkedin, FileText, GraduationCap, User, UserPlus, Mail } from 'lucide-react';
 import { API_BASE_URL } from '../api';
 import styles from './Members.module.css';
 
@@ -15,6 +15,7 @@ interface Member {
     image_url: string;
     type: 'pi' | 'current' | 'alumni';
     order_index: number;
+    email?: string;
     lattes?: string;
     linkedin?: string;
     orcid?: string;
@@ -92,6 +93,13 @@ const Members: React.FC = () => {
                         <span className={styles.role}>
                             {language === 'pt' ? member.role_pt : member.role_en}
                         </span>
+
+                        {member.email && (
+                            <div style={{ fontSize: '0.85rem', color: '#666', marginTop: '4px', marginBottom: '8px', wordBreak: 'break-all' }}>
+                                <strong>Email:</strong> <a href={`mailto:${member.email}`} style={{ color: 'inherit', textDecoration: 'none' }}>{member.email}</a>
+                            </div>
+                        )}
+
                         {member.type === 'alumni' && member.current_workplace && (
                             <p className={styles.currentWork}>
                                 <strong>{language === 'pt' ? 'Atualmente em:' : 'Currently at:'}</strong> {member.current_workplace}
@@ -115,6 +123,11 @@ const Members: React.FC = () => {
                         </p>
 
                         <div className={styles.socialLinks}>
+                            {member.email && (
+                                <a href={`mailto:${member.email}`} target="_blank" rel="noopener noreferrer" title="Email">
+                                    <Mail size={18} />
+                                </a>
+                            )}
                             {member.lattes && (
                                 <a href={member.lattes} target="_blank" rel="noopener noreferrer" title="Lattes">
                                     <FileText size={18} />

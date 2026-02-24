@@ -14,6 +14,7 @@ interface Member {
     bio_en: string;
     image_url: string;
     type: 'current' | 'alumni' | 'pi';
+    email?: string;
     lattes?: string;
     linkedin?: string;
     orcid?: string;
@@ -98,6 +99,7 @@ const ManageMembers: React.FC = () => {
             bio_pt: '',
             bio_en: '',
             image_url: '',
+            email: '',
             type: 'current',
             supervision_type: 'advisor',
             lattes: '',
@@ -184,6 +186,17 @@ const ManageMembers: React.FC = () => {
                                 onChange={e => setEditingMember({ ...editingMember, name: e.target.value })}
                                 required
                                 disabled={isViewOnly}
+                            />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label>Email</label>
+                            <input
+                                type="email"
+                                value={editingMember.email || ''}
+                                onChange={e => setEditingMember({ ...editingMember, email: e.target.value })}
+                                disabled={isViewOnly}
+                                placeholder="member@example.com"
                             />
                         </div>
 

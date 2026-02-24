@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS members (
   bio_pt TEXT,
   bio_en TEXT,
   image_url TEXT,
+  email TEXT,
   type TEXT CHECK(type IN ('current', 'alumni', 'pi')) DEFAULT 'current',
   order_index INTEGER DEFAULT 0,
   lattes TEXT,

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { ArrowLeft, Linkedin, FileText, GraduationCap, User } from 'lucide-react';
+import { ArrowLeft, Linkedin, FileText, GraduationCap, User, Mail } from 'lucide-react';
 import { API_BASE_URL } from '../api';
 import styles from './MemberProfile.module.css';
 
@@ -14,6 +14,7 @@ interface Member {
     bio_en: string;
     image_url: string;
     type: 'pi' | 'current' | 'alumni';
+    email?: string;
     lattes?: string;
     linkedin?: string;
     orcid?: string;
@@ -88,6 +89,13 @@ const MemberProfile: React.FC = () => {
                     <div className={styles.role}>
                         {language === 'pt' ? member.role_pt : member.role_en}
                     </div>
+
+                    {member.email && (
+                        <div style={{ marginBottom: '1.5rem', color: '#666', fontSize: '1.05rem' }}>
+                            <Mail size={16} style={{ verticalAlign: 'middle', marginRight: '6px' }} />
+                            <a href={`mailto:${member.email}`} style={{ color: 'inherit', textDecoration: 'none' }}>{member.email}</a>
+                        </div>
+                    )}
 
                     {member.type === 'alumni' && member.current_workplace && (
                         <div style={{ marginBottom: '1.5rem', color: '#666' }}>
