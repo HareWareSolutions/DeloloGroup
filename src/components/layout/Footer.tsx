@@ -36,7 +36,7 @@ const Footer: React.FC = () => {
                         <h4>{t('footer.contact')}</h4>
                         <ul className={styles.contactList}>
                             <li>
-                                <Mail size={16} /> <span>delologroup@gmail.com</span>
+                                <Mail size={16} /> <span>fabio.delolo@ufjf.br</span>
                             </li>
                             <li>
                                 <MapPin size={16} style={{ flexShrink: 0 }} />
