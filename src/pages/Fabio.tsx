@@ -143,7 +143,7 @@ const Fabio: React.FC = () => {
 
                     {/* Social/Academic Links */}
                     <div className={styles.socialButtons}>
-                        <a href="mailto:fabiodelolo@hotmail.com" className={styles.socialBtn}>
+                        <a href="mailto:fabio.delolo@ufjf.br" className={styles.socialBtn}>
                             <Mail size={18} /> Email
                         </a>
                         <a href="http://lattes.cnpq.br/9249500644603471" target="_blank" rel="noopener noreferrer" className={styles.socialBtn}>
