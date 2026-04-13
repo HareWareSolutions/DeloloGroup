@@ -1,19 +1,23 @@
 import React from 'react';
 import styles from './Admin.module.css';
 import { API_BASE_URL } from '../../api';
+import { useAuth } from '../../context/AuthContext';
 
 const Dashboard: React.FC = () => {
+    const { token } = useAuth();
     const [counts, setCounts] = React.useState({ members: 0, publications: 0, news: 0, candidates: 0 });
 
     React.useEffect(() => {
         const fetchStats = async () => {
             try {
+                const authToken = token || localStorage.getItem('authToken');
+                
                 const [membersRes, pubsRes, newsRes, candRes] = await Promise.all([
                     fetch(`${API_BASE_URL}/api/members`),
                     fetch(`${API_BASE_URL}/api/publications`),
                     fetch(`${API_BASE_URL}/api/news`),
                     fetch(`${API_BASE_URL}/api/candidates`, {
-                        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                        headers: { 'Authorization': `Bearer ${authToken}` }
                     })
                 ]);
 
@@ -34,7 +38,7 @@ const Dashboard: React.FC = () => {
         };
 
         fetchStats();
-    }, []);
+    }, [token]);
 
     const stats = [
         { label: 'Total Members', value: counts.members },
