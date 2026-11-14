@@ -1,0 +1,207 @@
+.loginPage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-background);
+}
+
+.loginContainer {
+    background: white;
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid var(--color-border);
+}
+
+.logoContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.loginLogo {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+}
+
+.loginTitle {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formGroup label {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.formGroup input {
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.formGroup input:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 2px rgba(89, 179, 41, 0.1);
+}
+
+.loginButton {
+    padding: 0.75rem;
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: background-color 0.2s;
+    margin-top: 1rem;
+}
+
+.loginButton:hover:not(:disabled) {
+    background-color: #095010;
+}
+
+.loginButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.errorMessage {
+    background-color: #fbeded;
+    color: var(--color-error);
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Dashboard Styles */
+.dashboardLayout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: white;
+    border-right: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.sidebarHeader {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    justify-content: center;
+}
+
+.sidebarLogo {
+    height: 40px;
+    width: auto;
+}
+
+.sidebarNav {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.sidebarNav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sidebarLink {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: all 0.2s;
+    display: block;
+}
+
+.sidebarLink:hover,
+.sidebarLinkActive {
+    background-color: rgba(89, 179, 41, 0.1);
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.userSection {
+    padding: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logoutBtn {
+    color: var(--color-error);
+    font-size: 0.9rem;
+}
+
+.mainContent {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2rem;
+}
+
+.pageHeader {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+.statCard {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+}
+
+.statValue {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0.5rem 0;
+}
+
+.statLabel {
+    color: #666;
+    font-size: 0.9rem;
+}
