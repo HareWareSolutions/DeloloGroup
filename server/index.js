@@ -12,20 +12,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3001;
+const PORT = Number(process.env.PORT || 3001);
+const dataDir = process.env.DATA_DIR || __dirname;
 const JWT_SECRET = 'delolo-research-group-secret-key-change-in-prod';
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(dataDir, 'uploads')));
 
 // Image Upload Configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        if (!fs.existsSync(path.join(__dirname, 'uploads'))) {
-            fs.mkdirSync(path.join(__dirname, 'uploads'));
+        if (!fs.existsSync(path.join(dataDir, 'uploads'))) {
+            fs.mkdirSync(path.join(dataDir, 'uploads'));
         }
-        cb(null, path.join(__dirname, 'uploads'));
+        cb(null, path.join(dataDir, 'uploads'));
     },
     filename: function (req, file, cb) {
         // Sanitize filename
@@ -37,7 +38,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Database
-const dbPath = path.join(__dirname, 'database.sqlite');
+const dbPath = path.join(dataDir, 'database.sqlite');
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) console.error('Error opening database', err);
     else {
@@ -190,7 +191,7 @@ app.post('/api/upload', authenticateToken, upload.single('image'), (req, res) =>
 
 // List images
 app.get('/api/media', authenticateToken, (req, res) => {
-    const directoryPath = path.join(__dirname, 'uploads');
+    const directoryPath = path.join(dataDir, 'uploads');
     fs.readdir(directoryPath, (err, files) => {
         if (err) return res.status(500).send('Unable to scan directory: ' + err);
         // Filter for image extensions if needed
